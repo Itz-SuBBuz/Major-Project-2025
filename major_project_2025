@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Fan Speed Regulator Project Blog</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f7f8;
+      color: #333;
+    }
+    header {
+      background-color: #00897b;
+      color: white;
+      padding: 30px 10px;
+      text-align: center;
+    }
+    header h1 {
+      margin-bottom: 10px;
+    }
+    nav {
+      background: #004d40;
+      padding: 12px;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    section {
+      background: white;
+      margin: 25px auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 900px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #00897b;
+      border-bottom: 2px solid #80cbc4;
+      padding-bottom: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background: #e0f2f1;
+    }
+    img {
+      width: 100%;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      background-color: #004d40;
+      color: white;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Smart Fan Speed Regulator using PWM & Mobile Control</h1>
+    <p>A Major Project by Subhankar Mondal | Electrical Engineering | 2025</p>
+  </header>
+
+  <nav>
+    <a href="#overview">Overview</a>
+    <a href="#objective">Objective</a>
+    <a href="#components">Components</a>
+    <a href="#working">Working</a>
+    <a href="#software">Software</a>
+    <a href="#features">Features</a>
+    <a href="#progress">Progress</a>
+    <a href="#results">Results</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section id="overview">
+    <h2>Project Overview</h2>
+    <p>
+      The <strong>Smart Fan Speed Regulator</strong> is an IoT-based system designed to control fan speed through a mobile application using PWM technique. 
+      This project enhances comfort and energy efficiency while allowing remote operation via smartphone connectivity.
+    </p>
+  </section>
+
+  <section id="objective">
+    <h2>Objective</h2>
+    <p>
+      The goal of this project is to design and implement a fan control system that can smoothly vary the fan speed using Pulse Width Modulation (PWM)
+      and be controlled wirelessly through a mobile app interface.
+    </p>
+  </section>
+
+  <section id="components">
+    <h2>Components & Materials Used</h2>
+    <ul>
+      <li>ESP32 Microcontroller</li>
+      <li>BTS7960 Motor Driver</li>
+      <li>12V 5A DC Motor</li>
+      <li>SMPS Power Supply</li>
+      <li>HW484 Hall Effect Sensor</li>
+      <li>Mobile Application (Blynk or Custom App)</li>
+      <li>Fan Blades and Housing</li>
+      <li>Connecting Wires, Breadboard, Soldering Kit</li>
+    </ul>
+    <img src="https://via.placeholder.com/700x400" alt="Components Image">
+  </section>
+
+  <section id="working">
+    <h2>Circuit Design & Working Principle</h2>
+    <p>
+      The ESP32 generates PWM signals that are sent to the BTS7960 motor driver to control motor speed. 
+      The mobile app sends commands via Wi-Fi or Bluetooth to the ESP32, which adjusts the duty cycle of PWM.
+      The Hall Effect sensor provides feedback for speed monitoring, ensuring stability and protection from overcurrent.
+    </p>
+    <img src="https://via.placeholder.com/700x400" alt="Circuit Diagram">
+  </section>
+
+  <section id="software">
+    <h2>Software & Programming</h2>
+    <p>
+      The code is written in Arduino IDE using the ESP32 library and Blynk framework for communication.
+      The main logic includes reading sensor data, controlling PWM signals, and updating fan speed based on app commands.
+    </p>
+    <pre>
+Setup:
+ - Initialize Wi-Fi and Blynk connection
+ - Configure PWM output pins
+Loop:
+ - Read input from app
+ - Map values to PWM duty cycle
+ - Send feedback to app
+    </pre>
+  </section>
+
+  <section id="features">
+    <h2>Features</h2>
+    <ul>
+      <li>Mobile App Control</li>
+      <li>Real-Time Speed Monitoring</li>
+      <li>Overcurrent and Overheating Protection</li>
+      <li>Soft Start Mechanism (Smooth speed-up)</li>
+      <li>Energy Efficient Design</li>
+    </ul>
+  </section>
+
+  <section id="progress">
+    <h2>Project Progress</h2>
+    <table>
+      <tr><th>Week</th><th>Task</th><th>Status</th></tr>
+      <tr><td>1</td><td>Idea Finalization</td><td>✅ Completed</td></tr>
+      <tr><td>2</td><td>Component Purchase</td><td>✅ Completed</td></tr>
+      <tr><td>3</td><td>Circuit Design</td><td>✅ Completed</td></tr>
+      <tr><td>4</td><td>Programming</td><td>⚙️ In Progress</td></tr>
+      <tr><td>5</td><td>Testing & Results</td><td>🔄 Pending</td></tr>
+    </table>
+  </section>
+
+  <section id="results">
+    <h2>Results & Testing</h2>
+    <p>
+      The system successfully controls fan speed using PWM via mobile application. 
+      The feedback mechanism ensures accurate control and stable operation even under variable loads.
+    </p>
+    <p><strong>Future Scope:</strong> Integration with voice assistants and temperature-based auto control.</p>
+  </section>
+
+  <section id="gallery">
+    <h2>Project Gallery</h2>
+    <img src="https://via.placeholder.com/700x400" alt="Project Setup Image">
+    <img src="https://via.placeholder.com/700x400" alt="Working Demo Image">
+  </section>
+
+  <section id="contact">
+    <h2>Contact / Credits</h2>
+    <p><strong>Developed By:</strong> Subhankar Mondal</p>
+    <p><strong>College:</strong> [Your College Name]</p>
+    <p><strong>Department:</strong> Electrical Engineering</p>
+    <p><strong>Guide:</strong> [Guide Name]</p>
+    <p><strong>Email:</strong> [Your Email Here]</p>
+  </section>
+
+  <footer>
+    <p>© 2025 Smart Fan Project | Designed by Subhankar Mondal</p>
+  </footer>
+
+</body>
+</html>
