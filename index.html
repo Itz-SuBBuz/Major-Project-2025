@@ -61,6 +61,17 @@
       color: white;
       margin-top: 30px;
     }
+.image-container img {
+      width: 18%;
+      height: auto;
+      border-radius: 8px;
+      margin: 5px;
+    }
+    .image-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
   </style>
 </head>
 <body>
@@ -111,7 +122,14 @@
       <li>Fan Blades and Housing</li>
       <li>Connecting Wires, Breadboard, Soldering Kit</li>
     </ul>
-    <img src="https://via.placeholder.com/700x400" alt="Components Image">
+    <div class="image-container">
+  <img src="DC Motor.jpg" alt="Image 1">
+  <img src="bts7960.jpg" alt="Image 2">
+  <img src="DC-12V-5A-SMPS-Industrial-Power-Supply.jpg" alt="Image 3">
+  <img src="download.jpeg" alt="Image 4">
+  <img src="hall-effect-sensor.jpg" alt="Image 5">
+</div>
+
   </section>
 
   <section id="working">
@@ -127,7 +145,7 @@ The ESP8266 receives this input and processes it to generate a PWM signal with a
 
 The generated PWM signal is then fed into the BTS7960 motor driver module, which amplifies the control signal to a higher current suitable for driving the motor. The BTS7960 acts as a bridge between the low-power control circuit and the high-power motor, ensuring safe and efficient operation.<br>
 
-Finally, the BTS7960 outputs the controlled voltage and current to the DC motor according to the PWM duty cycle. This allows smooth and efficient speed variation of the fan, with quick response to user inputs through the web interface.<br><b>Circuit Design:<br><div style="position: relative; width: 100%; padding-top: calc(max(56.25%, 400px));">
+Finally, the BTS7960 outputs the controlled voltage and current to the DC motor according to the PWM duty cycle. This allows smooth and efficient speed variation of the fan, with quick response to user inputs through the web interface.<br><br><b>Circuit Design:<br><div style="position: relative; width: 100%; padding-top: calc(max(56.25%, 400px));">
   <iframe src="https://app.cirkitdesigner.com/project/fd96a6f2-8906-49f2-a262-c72777f63179?view=interactive_preview" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
 </div>
     </p>
@@ -153,8 +171,8 @@ Loop:
   <section id="features">
     <h2>Features</h2>
     <ul>
-      <li>Web Interface Control System :<br>A web interface control system allows users to remotely monitor and control devices like DC motors or smart fans through any browser, making it platform-independent and easy to use. It offers real-time control, enhanced security through access management, and flexibility for future upgrades without hardware changes. The system provides a user-friendly interface for smooth operation, ensuring efficient, accessible, and modern control suitable for IoT-based applications.</li>
-      <li>Soft Start Mechanism (Smooth speed-up). <br><a href="https://rogers5880.com/2024/04/25/dc-motor-soft-start-understand-and-creating-your-own/" target="_blank">Click here</a> to understand the concept of soft start method of dc motor.</li>
+      <li>Web Interface Control System :<br>A web interface control system allows users to remotely monitor and control devices like DC motors or smart fans through any browser, making it platform-independent and easy to use. It offers real-time control, enhanced security through access management, and flexibility for future upgrades without hardware changes. The system provides a user-friendly interface for smooth operation, ensuring efficient, accessible, and modern control suitable for IoT-based applications.</li><br>
+      <li>Soft Start Mechanism (Smooth speed-up). <br><a href="https://rogers5880.com/2024/04/25/dc-motor-soft-start-understand-and-creating-your-own/" target="_blank">Click here</a> to understand the concept of soft start method of dc motor.</li><br>
       <li>Energy Efficient Design. <br><a href="https://www.electronics-tutorials.ws/blog/pulse-width-modulation.html" target="_blank">Click here</a> for the explanation for the energy effiiency advatage by using the pwm method.</li>
     </ul>
   </section>
