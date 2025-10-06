@@ -61,17 +61,43 @@
       color: white;
       margin-top: 30px;
     }
+.image-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .image-container img {
-      width: 18%;
-      height: auto;
-      border-radius: 8px;
-      margin: 5px;
-    }
-    .image-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
+  width: 18%;
+  height: auto;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.3s;
+}
+
+.image-container img:hover {
+  transform: scale(1.05);
+}
+
+#overlay {
+  position: fixed;
+  display: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#overlay img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+}
+
   </style>
 </head>
 <body>
@@ -123,12 +149,29 @@
       <li>Connecting Wires, Breadboard, Soldering Kit</li>
     </ul>
     <div class="image-container">
-  <img src="Dc Motor.jpg" alt="Image 1">
-  <img src="bts7960.jpg" alt="Image 2">
-  <img src="DC-12V-5A-SMPS-Industrial-Power-Supply.jpg" alt="Image 3">
-  <img src="download.jpeg" alt="Image 4">
-  <img src="hall-effect-sensor.jpg" alt="Image 5">
+  <img src="download.jpeg" alt="Image 1" onclick="showImage(this)">
+  <img src="bts7960.jpg" alt="Image 2" onclick="showImage(this)">
+  <img src="Dc Motor.jpg" alt="Image 3" onclick="showImage(this)">
+  <img src="smps.jpg" alt="Image 4" onclick="showImage(this)">
+  <img src="hall-effect-sensor.jpg" alt="Image 5" onclick="showImage(this)">
 </div>
+
+<!-- Overlay for enlarged image -->
+<div id="overlay" onclick="hideOverlay()">
+  <img id="overlay-img" src="">
+</div>
+
+<script>
+function showImage(img) {
+  document.getElementById('overlay-img').src = img.src;
+  document.getElementById('overlay').style.display = 'flex';
+}
+
+function hideOverlay() {
+  document.getElementById('overlay').style.display = 'none';
+}
+</script>
+
 
   </section>
 
