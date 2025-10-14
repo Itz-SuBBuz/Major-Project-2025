@@ -546,15 +546,13 @@ Benefit: Comfortable control from your phone anywhere at home.<br><br>
 
 <b>7. Energy-Efficient Control</b><br>
 
-Feature: Using PWM (Pulse Width Modulation) to adjust fan speed.
+In our project, Pulse Width Modulation (PWM) is used to control the speed of the DC motor efficiently. Unlike traditional methods such as using resistors or variable voltage regulators, which waste extra energy as heat, PWM works by rapidly switching the motor’s supply voltage ON and OFF at a very high frequency. The ratio of the ON time to the total cycle time (called the duty cycle) determines the average voltage applied to the motor.
 
-How it works:
+<br>When the duty cycle is reduced, the motor receives power in short pulses instead of a continuously lowered voltage. Because the switching device (like a MOSFET or motor driver) is either fully ON or fully OFF, it experiences very low power loss — almost no energy is wasted as heat during control. The motor’s inertia smooths out these rapid pulses, so it still runs smoothly at the required speed.
 
-Only supplies as much power as needed to achieve the selected speed.
+<br>This method makes PWM highly energy-efficient, as it only delivers the exact amount of power needed to maintain the desired motor speed, without unnecessary energy loss. As a result, our system consumes less power, produces less heat, and increases the overall efficiency and lifespan of the motor and driver components.<br><br>
 
-Benefit: Saves energy compared to running the fan at full voltage all the time.<br><br>
-
-<b>8. Safe Defaults</b><br>
+<b>8. Safety Defaults</b><br>
 Feature: When turning off the fan:
 
 Fan speed is zero
