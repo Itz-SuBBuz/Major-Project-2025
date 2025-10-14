@@ -187,28 +187,24 @@
     <p>
       The Smart Fan Control System is an IoT-based automation project designed to control a DC fan wirelessly through a web interface accessible on any smartphone, tablet, or computer. Using the ESP8266 microcontroller, the system hosts a local Wi-Fi web server that allows users to turn the fan ON/OFF, adjust its speed, and control its tilt angle in real time.
 
-The fan’s speed is regulated by a BTS7960 motor driver using the PWM (Pulse Width Modulation) technique, while a servo motor manages the tilting mechanism for airflow direction. The entire setup is powered by an SMPS power supply, and both the ESP8266 and Arduino Nano work together — the ESP8266 handles network communication and web control, while the Nano manages the actual motor control signals.
+      The fan’s speed is regulated by a BTS7960 motor driver using the PWM (Pulse Width Modulation) technique, while a servo motor manages the tilting mechanism for airflow direction. The entire setup is powered by an SMPS power supply, and both the ESP8266 and Arduino Nano work together — the ESP8266 handles network communication and web control, while the Nano manages the actual motor control signals.
 
-This project demonstrates the integration of IoT with traditional electrical systems to create energy-efficient, user-friendly, and smart home appliances that enhance comfort and convenience.    </p>
+      This project demonstrates the integration of IoT with traditional electrical systems to create energy-efficient, user-friendly, and smart home appliances that enhance comfort and convenience.
+    </p>
   </section>
 
   <!-- === OBJECTIVE === -->
   <section id="objective">
     <h2>Objective</h2>
     <p>
-      The primary objective of the Smart Fan Control System is to design and develop a smart, automated fan that can be wirelessly operated using IoT technology. The project focuses on achieving reliable and smooth fan control through a mobile or web interface.<br>
+      The primary objective of the Smart Fan Control System is to design and develop a smart, automated fan that can be wirelessly operated using IoT technology. The project focuses on achieving reliable and smooth fan control through a mobile or web interface.<br><br>
 
-Specific objectives include:<br>
-
-<li>To enable remote control of fan speed and movement through Wi-Fi.<br></li>
-
-<li>To implement PWM-based speed regulation for efficient motor performance.<br></li>
-
-<li>To provide real-time control and feedback using a responsive web interface.<br></li>
-
-<li>To design a compact and affordable IoT solution for home automation.<br></li>
-
-<li>To demonstrate the practical application of IoT and microcontrollers in electrical engineering.<br></li>
+      Specific objectives include:<br>
+      <li>To enable remote control of fan speed and movement through Wi-Fi.</li>
+      <li>To implement PWM-based speed regulation for efficient motor performance.</li>
+      <li>To provide real-time control and feedback using a responsive web interface.</li>
+      <li>To design a compact and affordable IoT solution for home automation.</li>
+      <li>To demonstrate the practical application of IoT and microcontrollers in electrical engineering.</li>
     </p>
   </section>
 
@@ -234,7 +230,7 @@ Specific objectives include:<br>
       <img src="bts7960.jpg" alt="BTS7960" onclick="showImage(this)">
       <img src="Dc Motor.jpg" alt="DC Motor" onclick="showImage(this)">
       <img src="smps.jpg" alt="SMPS" onclick="showImage(this)">
-      <img src="mg995.jpg" alt="SMPS" onclick="showImage(this)">
+      <img src="mg995.jpg" alt="MG995" onclick="showImage(this)">
     </div>
 
     <div id="overlay" onclick="hideOverlay()">
@@ -247,17 +243,17 @@ Specific objectives include:<br>
     <h2>Circuit Design & Working Principle</h2>
     <p>
       <b>Working Principle:</b><br>
-      The working of this system is based on user interaction through a web interface that communicates with the ESP8266 microcontroller, which generates a PWM (Pulse Width Modulation) signal to control the DC motor speed via the BTS7960 motor driver.<br>
+      The working of this system is based on user interaction through a web interface that communicates with the ESP8266 microcontroller, which generates a PWM (Pulse Width Modulation) signal to control the DC motor speed via the BTS7960 motor driver.<br><br>
 
-At first, the user connects to the web interface hosted by the ESP8266. The interface provides control buttons such as ON/OFF and speed levels (30%, 60%, 100%). When the user selects any control option, a corresponding command is sent to the ESP8266 through the network.<br>
+      At first, the user connects to the web interface hosted by the ESP8266. The interface provides control buttons such as ON/OFF and speed levels (30%, 60%, 100%). When the user selects any control option, a corresponding command is sent to the ESP8266 through the network.<br><br>
 
-The ESP8266 receives this input and processes it to generate a PWM signal with a specific duty cycle. This PWM signal represents the average voltage that will be applied to the motor. A higher duty cycle corresponds to higher speed, while a lower duty cycle reduces the motor speed.<br>
+      The ESP8266 receives this input and processes it to generate a PWM signal with a specific duty cycle. This PWM signal represents the average voltage that will be applied to the motor. A higher duty cycle corresponds to higher speed, while a lower duty cycle reduces the motor speed.<br><br>
 
-The generated PWM signal is then fed into the BTS7960 motor driver module, which amplifies the control signal to a higher current suitable for driving the motor. The BTS7960 acts as a bridge between the low-power control circuit and the high-power motor, ensuring safe and efficient operation.<br>
+      The generated PWM signal is then fed into the BTS7960 motor driver module, which amplifies the control signal to a higher current suitable for driving the motor. The BTS7960 acts as a bridge between the low-power control circuit and the high-power motor, ensuring safe and efficient operation.<br><br>
 
-Finally, the BTS7960 outputs the controlled voltage and current to the DC motor according to the PWM duty cycle. This allows smooth and efficient speed variation of the fan, with quick response to user inputs through the web interface.
+      Finally, the BTS7960 outputs the controlled voltage and current to the DC motor according to the PWM duty cycle. This allows smooth and efficient speed variation of the fan, with quick response to user inputs through the web interface.<br><br>
 
-      <br><br><b>Circuit Design:</b>
+      <b>Circuit Design:</b>
       <div style="position: relative; width: 100%; padding-top: calc(max(56.25%, 400px));">
         <iframe src="https://app.cirkitdesigner.com/project/fd96a6f2-8906-49f2-a262-c72777f63179?view=interactive_preview" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
       </div>
@@ -323,15 +319,15 @@ Mapping & constraining values: Prevents invalid PWM values and ensures smooth fa
 Non-blocking servo control: Using millis() avoids delays that could slow down fan control.
 
 Real-time monitoring: Serial.print() statements in both controllers help in debugging and monitoring the system live.<br><br>
+
     </p>
 
-    <section id="microcontroller-code">
-      <h2>Microcontroller Code</h2>
-      <div class="code-card">
-        <div class="code-header">ESP8266 Code</div>      
-        <pre>
-#include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
+    <!-- === CODE CARDS === -->
+    <div class="code-card">
+      <div class="code-header">ESP8266 Code</div>
+      <pre>
+#include &lt;ESP8266WiFi.h&gt;
+#include &lt;ESP8266WebServer.h&gt;
 
 const char* ssid = "subuz_";        
 const char* password = "SMwifi@24"; 
@@ -405,80 +401,48 @@ void setup() {
 void loop() {
   server.handleClient();
 }
-
       </pre>
     </div>
 
-    <!-- === ARDUINO NANO CODE CARD === -->
     <div class="code-card">
       <div class="code-header">Arduino Nano Code</div>
       <pre>
-#include <Servo.h>
+#include &lt;Servo.h&gt;
 
-// --- Pins ---
-// Fan PWM input from ESP8266 (0-3.3V)
 const int fanPWMInput = A0;
-
-// Nano PWM output to BTS7960
 const int fanPWMOut = 5;
-
-// BTS7960 direction pins
 const int motorL = 6; 
 const int motorR = 7;
-
-// Servo control input from ESP8266 D2
 const int servoControlPin = 2;
-
-// Servo pin
 const int servoPin = 9;
 
-// --- Servo setup ---
 Servo tiltServo;
-int servoAngle = 90;        // Start at neutral
-bool servoDirection = false; // false=up(60->120), true=down
+int servoAngle = 90;
+bool servoDirection = false;
 unsigned long lastServoTime = 0;
-const int servoSpeedDelay = 20; // ms per 1 degree for smooth tilting
+const int servoSpeedDelay = 20;
 
 void setup() {
   Serial.begin(9600);
-
-  // Motor pins
   pinMode(fanPWMOut, OUTPUT);
   pinMode(motorL, OUTPUT);
   pinMode(motorR, OUTPUT);
-
-  // Servo control pin
   pinMode(servoControlPin, INPUT);
-
-  // Initialize servo
   tiltServo.attach(servoPin);
-  tiltServo.write(servoAngle); // start neutral
+  tiltServo.write(servoAngle);
 }
 
 void loop() {
-  // -------------------
-  // FAN PWM CONTROL
-  // -------------------
-  int pwmVal = analogRead(fanPWMInput); // read 0-1023 (0–3.3V input)
-
-  // Map 0-3.3V input to 0-5V PWM output (Nano analogWrite 0-255)
-  // 3.3V corresponds to ~682 in Nano ADC scale (1023 * 3.3/5)
+  int pwmVal = analogRead(fanPWMInput);
   int pwmOut = map(pwmVal, 0, 682, 0, 255);
   pwmOut = constrain(pwmOut, 0, 255);
-
-  analogWrite(fanPWMOut, pwmOut); // send PWM to BTS7960
-
-  // Set motor direction (adjust as needed)
+  analogWrite(fanPWMOut, pwmOut);
   digitalWrite(motorL, HIGH);
   digitalWrite(motorR, HIGH);
 
-  // -------------------
-  // SERVO CONTROL
-  // -------------------
   bool servoActive = digitalRead(servoControlPin);
 
   if (servoActive) {
-    // Smooth tilting cycle 60°-120°
     unsigned long now = millis();
     if (now - lastServoTime >= servoSpeedDelay) {
       lastServoTime = now;
@@ -492,7 +456,6 @@ void loop() {
       tiltServo.write(servoAngle);
     }
   } else {
-    // Move servo to neutral 90° when OFF
     if (servoAngle < 90) servoAngle++;
     else if (servoAngle > 90) servoAngle--;
     tiltServo.write(servoAngle);
@@ -500,10 +463,13 @@ void loop() {
 }
       </pre>
     </div>
+
   </section>
 
   <!-- === FEATURES, RESULTS, GALLERY, CREDITS === -->
-  <section id="features"><h2>Features</h2><p><b>1. Wifi enabled control system</b><br>
+  <section id="features">
+    <h2>Features</h2>
+    <p><b>1. Wifi enabled control system</b><br>
 
 Feature: You can control your fan over Wi-Fi using any browser on your phone or computer.
 
@@ -603,8 +569,12 @@ Add temperature/humidity sensor to auto-adjust fan speed.
 
 Add schedule control (fan turns on/off at specific times).
 
-Add voice control using Alexa or Google Home.<br><br></p></section>
-  <section id="results"><h2>Results & Testing</h2><p><b>🔹 1. System Setup</b><br>
+Add voice control using Alexa or Google Home.<br><br></p>
+  </section>
+
+  <section id="results">
+    <h2>Results & Testing</h2>
+    <p><b>🔹 1. System Setup</b><br>
 
 The project setup consisted of:
 
@@ -688,12 +658,25 @@ Energy efficiency	PWM optimized	✅<br>
 ✅ Final Result<br>
 
 The Smart Fan Control System successfully enabled wireless operation of a DC fan, providing real-time speed control and automatic tilt adjustment through an ESP8266-hosted web dashboard.
-The system was low-cost, responsive, and energy-efficient, making it a smart and scalable home automation prototype.<br></p></section>
-  <section id="gallery"><h2>Project Gallery</h2><img src="https://via.placeholder.com/700x400" alt="Setup"><img src="https://via.placeholder.com/700x400" alt="Demo"></section>
-  <section id="credit"><h2>Credits</h2><p><strong>Developed By:</strong> DEE 2023-26<br><strong>College:</strong> Behala Government Polytechnic<br><strong>Department:</strong> Electrical Engineering</p></section>
+The system was low-cost, responsive, and energy-efficient, making it a smart and scalable home automation prototype.<br></p>
+  </section>
+
+  <section id="gallery">
+    <h2>Project Gallery</h2>
+    <div class="image-container">
+      <img src="fan1.jpg" alt="Fan Prototype 1" onclick="showImage(this)">
+      <img src="fan2.jpg" alt="Fan Prototype 2" onclick="showImage(this)">
+      <img src="fan3.jpg" alt="Fan Prototype 3" onclick="showImage(this)">
+    </div>
+  </section>
+
+  <section id="credit">
+    <h2>Credits</h2>
+    <p>Designed and implemented by DEE Students, Behala Government Polytechnic, 2025.</p>
+  </section>
 
   <footer>
-    <p>© 2025 Smart Fan Project | Designed by DEE | 2023-26 | Behala Government Polytechnic</p>
+    &copy; 2025 Smart Fan Control System Project. All rights reserved.
   </footer>
 
   <script>
