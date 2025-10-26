@@ -326,8 +326,8 @@ Real-time monitoring: Serial.print() statements in both controllers help in debu
     <div class="code-card">
       <div class="code-header">ESP8266 Code</div>
       <pre>
-#include &lt;ESP8266WiFi.h&gt;
-#include &lt;ESP8266WebServer.h&gt;
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
 
 const char* ssid = "subuz_";        
 const char* password = "SMwifi@24"; 
@@ -335,13 +335,13 @@ const char* password = "SMwifi@24";
 ESP8266WebServer server(80);
 
 bool fanState = false;
-int fanSpeed = 0;
+int fanSpeed = 75;  // Default speed (used only after turning ON)
 bool servoState = false;
 
 const int fanPin = D1;   
 const int servoPin = D2; 
 
-String buildHTML() // Web page code goes here
+String buildHTML() //Webpage code goes here.
 
 void setup() {
   Serial.begin(115200);
@@ -361,9 +361,10 @@ void setup() {
 
   server.on("/fan/on", []() {
     fanState = true;
-    int pwmVal = map(fanSpeed, 0, 100, 0, 1023);
+    fanSpeed = 75;  // Default 75% when turned ON
+    int pwmVal = map(fanSpeed, 0, 100, 512, 1023);
     analogWrite(fanPin, pwmVal);
-    Serial.println("FAN:ON");
+    Serial.println("FAN: ON (Default 75%)");
     server.send(200, "text/plain", "OK");
   });
 
@@ -372,7 +373,7 @@ void setup() {
     analogWrite(fanPin, 0);
     servoState = false;
     digitalWrite(servoPin, LOW);
-    Serial.println("FAN:OFF + SERVO LOCK AT 90");
+    Serial.println("FAN: OFF + SERVO LOCK");
     server.send(200, "text/plain", "OK");
   });
 
@@ -380,17 +381,17 @@ void setup() {
     fanSpeed = server.arg("val").toInt();
     fanSpeed = constrain(fanSpeed, 0, 100);
     if (fanState) {
-      int pwmVal = map(fanSpeed, 0, 100, 0, 1023);
+      int pwmVal = map(fanSpeed, 0, 100, 512, 1023);
       analogWrite(fanPin, pwmVal);
     }
-    Serial.print("SPD:"); Serial.println(fanSpeed);
+    Serial.print("SPD: "); Serial.println(fanSpeed);
     server.send(200, "text/plain", "OK");
   });
 
   server.on("/servo", []() {
     servoState = (server.arg("state") == "on");
     digitalWrite(servoPin, servoState ? HIGH : LOW);
-    Serial.print("SERVO:"); Serial.println(servoState ? "ON" : "OFF");
+    Serial.print("SERVO: "); Serial.println(servoState ? "ON" : "OFF");
     server.send(200, "text/plain", "OK");
   });
 
@@ -401,6 +402,7 @@ void setup() {
 void loop() {
   server.handleClient();
 }
+
       </pre>
     </div>
 
@@ -662,9 +664,9 @@ The system was low-cost, responsive, and energy-efficient, making it a smart and
   <section id="gallery">
     <h2>Project Gallery</h2>
     <div class="image-container">
-      <img src="fan1.jpg" alt="Fan Prototype 1" onclick="showImage(this)">
-      <img src="fan2.jpg" alt="Fan Prototype 2" onclick="showImage(this)">
-      <img src="fan3.jpg" alt="Fan Prototype 3" onclick="showImage(this)">
+      <img src="Side_view.jpg" alt="Fan Prototype 1" onclick="showImage(this)">
+      <img src="Front_view.jpg" alt="Fan Prototype 2" onclick="showImage(this)">
+      <img src="Back_view.jpg" alt="Fan Prototype 3" onclick="showImage(this)">
     </div>
   </section>
 
@@ -692,5 +694,3 @@ The system was low-cost, responsive, and energy-efficient, making it a smart and
   </script>
 </body>
 </html>
-
-      
