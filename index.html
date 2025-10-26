@@ -200,7 +200,7 @@
       The primary objective of the Smart Fan Control System is to design and develop a smart, automated fan that can be wirelessly operated using IoT technology. The project focuses on achieving reliable and smooth fan control through a mobile or web interface.<br><br>
 
       Specific objectives include:<br>
-      <li>To enable remote control of fan speed and movement through Wi-Fi.</li>
+      <li>To enable remote control of fan speed and movement through network.</li>
       <li>To implement PWM-based speed regulation for efficient motor performance.</li>
       <li>To provide real-time control and feedback using a responsive web interface.</li>
       <li>To design a compact and affordable IoT solution for home automation.</li>
@@ -245,7 +245,7 @@
       <b>Working Principle:</b><br>
       The working of this system is based on user interaction through a web interface that communicates with the ESP8266 microcontroller, which generates a PWM (Pulse Width Modulation) signal to control the DC motor speed via the BTS7960 motor driver.<br><br>
 
-      At first, the user connects to the web interface hosted by the ESP8266. The interface provides control buttons such as ON/OFF and speed levels (30%, 60%, 100%). When the user selects any control option, a corresponding command is sent to the ESP8266 through the network.<br><br>
+      At first, the user connects to the web interface hosted by the ESP8266. The interface provides control buttons such as ON/OFF and speed levels (50%, 75%, 100%). When the user selects any control option, a corresponding command is sent to the ESP8266 through the network.<br><br>
 
       The ESP8266 receives this input and processes it to generate a PWM signal with a specific duty cycle. This PWM signal represents the average voltage that will be applied to the motor. A higher duty cycle corresponds to higher speed, while a lower duty cycle reduces the motor speed.<br><br>
 
@@ -325,12 +325,11 @@ Real-time monitoring: Serial.print() statements in both controllers help in debu
     <!-- === CODE CARDS === -->
     <div class="code-card">
       <div class="code-header">ESP8266 Code</div>
-      <pre>
-#include <ESP8266WiFi.h>
+      <pre>#include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 
-const char* ssid = "subuz_";        
-const char* password = "SMwifi@24"; 
+const char* ssid = "ssid";        
+const char* password = "password"; 
 
 ESP8266WebServer server(80);
 
@@ -341,9 +340,7 @@ bool servoState = false;
 const int fanPin = D1;   
 const int servoPin = D2; 
 
-String buildHTML() //Webpage code goes here.
-
-void setup() {
+String buildHTML() void setup() {
   Serial.begin(115200);
   pinMode(fanPin, OUTPUT);
   analogWriteRange(1023);
@@ -402,8 +399,7 @@ void setup() {
 void loop() {
   server.handleClient();
 }
-
-      </pre>
+</pre>
     </div>
 
     <div class="code-card">
@@ -499,13 +495,13 @@ Benefit: Instant feedback on fan state, easy for anyone to use.<br><br>
 
 <b>3. Fan Speed Control (PWM)</b><br>
 
-Feature: You can control fan speed using a slider (0–100%).
+Feature: The speed of the fan are set among three options "(i)"{50%}, "(ii)"{75%}, "(iii)"{100%} which can be selected by the three provided control buttons at the webpage (0–100%).
 
 How it works:
 
-The slider sends the value to the ESP (/speed?val=XX).
+The buttons sends the value to the ESP (/speed?val=XX).
 
-ESP converts this percentage into PWM signal (0–1023) for speed control.
+ESP converts this percentage into PWM signal (511, 767, 1023) for speed control.
 
 Hardware: Uses analogWrite() to control fan voltage.
 
