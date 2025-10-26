@@ -495,13 +495,13 @@ Benefit: Instant feedback on fan state, easy for anyone to use.<br><br>
 
 <b>3. Fan Speed Control (PWM)</b><br>
 
-Feature: The speed of the fan are set among three options "(i)"{50%}, "(ii)"{75%}, "(iii)"{100%} which can be selected by the three provided control buttons at the webpage (0–100%).
+Feature: The speed of the fan are set among three options "(i)"{50%}, "(ii)"{75%}, "(iii)"{100%} which can be selected by the three provided control buttons at the webpage.
 
 How it works:
 
 The buttons sends the value to the ESP (/speed?val=XX).
 
-ESP converts this percentage into PWM signal (511, 767, 1023) for speed control.
+ESP converts this percentage into PWM signal (511 for 50%, 767 for 75%, 1023 for 100%) for speed control.
 
 Hardware: Uses analogWrite() to control fan voltage.
 
