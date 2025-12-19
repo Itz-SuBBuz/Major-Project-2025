@@ -3,330 +3,941 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Major Project Blog DEE 2025</title>
+  <title>Smart Fan Control System | Major Project DEE 2025</title>
+  <meta name="description" content="IoT-based Smart Fan Control System - Major Project by DEE 2023-26 at Behala Government Polytechnic">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
-    body {
-      font-family: "Segoe UI", sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f4f7f8;
-      color: #333;
     }
-    header {
-      background-color: #00897b;
-      color: white;
-      padding: 30px 10px;
-      text-align: center;
+    
+    html {
+      scroll-behavior: smooth;
     }
-    header h1 {
-      margin-bottom: 10px;
-      font-size: 1.8em;
-    }
-    nav {
-      background: #004d40;
-      padding: 12px;
-      text-align: center;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 0.95em;
-      padding: 6px 10px;
-      border-radius: 6px;
-      transition: background 0.3s;
-    }
-    nav a:hover {
-      background: #00796b;
-    }
-    section {
-      background: white;
-      margin: 25px auto;
-      padding: 20px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 900px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-    h2 {
-      color: #00897b;
-      border-bottom: 2px solid #80cbc4;
-      padding-bottom: 5px;
-    }
-    img {
-      width: 100%;
-      border-radius: 8px;
-      margin-top: 10px;
-    }
-    footer {
-      text-align: center;
-      padding: 15px;
-      background-color: #004d40;
-      color: white;
-      margin-top: 30px;
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      min-height: 100vh;
+      color: #e0e0e0;
+      line-height: 1.7;
     }
 
-    /* Image gallery */
-    .image-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-    }
-    .image-container img {
-      width: 45%;
-      max-width: 150px;
-      height: auto;
-      cursor: pointer;
-      border-radius: 8px;
-      transition: transform 0.3s;
-    }
-    .image-container img:hover {
-      transform: scale(1.05);
-    }
-
-    /* Overlay image viewer */
-    #overlay {
+    /* Animated Background */
+    .bg-animation {
       position: fixed;
-      display: none;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
+      z-index: -1;
+      overflow: hidden;
+    }
+    
+    .bg-animation::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 20% 80%, rgba(0, 212, 170, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.05) 0%, transparent 40%);
+      animation: bgMove 20s ease-in-out infinite;
+    }
+    
+    @keyframes bgMove {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(-5%, -5%) rotate(3deg); }
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+      text-align: center;
+      padding: 40px 20px;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 212, 170, 0.15) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulse 4s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+      50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+    }
+    
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 212, 170, 0.15);
+      border: 1px solid rgba(0, 212, 170, 0.3);
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #00d4aa;
+      margin-bottom: 24px;
+      backdrop-filter: blur(10px);
+      animation: fadeInUp 0.8s ease-out;
+    }
+    
+    .hero-badge::before {
+      content: '⚡';
+    }
+    
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #00d4aa 0%, #6366f1 50%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+      animation: fadeInUp 0.8s ease-out 0.1s backwards;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.7);
+      max-width: 600px;
+      margin-bottom: 16px;
+      animation: fadeInUp 0.8s ease-out 0.2s backwards;
+    }
+    
+    .hero-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      justify-content: center;
+      margin-top: 20px;
+      animation: fadeInUp 0.8s ease-out 0.3s backwards;
+    }
+    
+    .hero-info-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .hero-info-item span {
+      color: #00d4aa;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.8rem;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    
+    .scroll-indicator::after {
+      content: '';
+      width: 24px;
+      height: 40px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      position: relative;
+    }
+    
+    .scroll-indicator::before {
+      content: '';
+      width: 4px;
+      height: 8px;
+      background: #00d4aa;
+      border-radius: 2px;
+      position: absolute;
+      bottom: 24px;
+      animation: scrollDot 2s ease-in-out infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-10px); }
+    }
+    
+    @keyframes scrollDot {
+      0%, 100% { opacity: 1; transform: translateY(0); }
+      50% { opacity: 0.5; transform: translateY(12px); }
+    }
+
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(15, 12, 41, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 16px 20px;
       z-index: 1000;
     }
+    
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    nav a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      padding: 10px 18px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    nav a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #00d4aa, #6366f1);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+    
+    nav a:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    nav a:hover::before {
+      width: 60%;
+    }
+
+    /* Main Content */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+
+    /* Section Cards */
+    section {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 40px;
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+    
+    section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #00d4aa, #6366f1, #ec4899);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    section:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.12);
+      transform: translateY(-4px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+    }
+    
+    section:hover::before {
+      opacity: 1;
+    }
+
+    /* Section Headers */
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    h2::before {
+      content: '';
+      width: 4px;
+      height: 28px;
+      background: linear-gradient(180deg, #00d4aa, #6366f1);
+      border-radius: 2px;
+    }
+    
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #00d4aa;
+      margin: 32px 0 16px;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.75);
+      margin-bottom: 16px;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin: 16px 0;
+      padding-left: 24px;
+    }
+    
+    li {
+      color: rgba(255, 255, 255, 0.75);
+      margin-bottom: 12px;
+      position: relative;
+    }
+    
+    ul li::marker {
+      color: #00d4aa;
+    }
+    
+    li a {
+      color: #6366f1;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    
+    li a:hover {
+      color: #00d4aa;
+    }
+
+    /* Feature Cards */
+    .feature-grid {
+      display: grid;
+      gap: 24px;
+      margin-top: 24px;
+    }
+    
+    .feature-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(0, 212, 170, 0.3);
+      transform: translateX(8px);
+    }
+    
+    .feature-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .feature-title .icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, rgba(0, 212, 170, 0.2), rgba(99, 102, 241, 0.2));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    
+    .feature-card p {
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    /* Image Gallery */
+    .image-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    
+    .gallery-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.4s ease;
+    }
+    
+    .gallery-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 212, 170, 0.3), rgba(99, 102, 241, 0.3));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1;
+    }
+    
+    .gallery-item::after {
+      content: '🔍';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      font-size: 2rem;
+      z-index: 2;
+      transition: transform 0.3s ease;
+    }
+    
+    .gallery-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 20px 40px -12px rgba(0, 212, 170, 0.3);
+    }
+    
+    .gallery-item:hover::before {
+      opacity: 1;
+    }
+    
+    .gallery-item:hover::after {
+      transform: translate(-50%, -50%) scale(1);
+    }
+    
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
+
+    /* Overlay */
+    #overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(10px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      padding: 40px;
+      cursor: zoom-out;
+    }
+    
     #overlay img {
       max-width: 90%;
       max-height: 90%;
-      border-radius: 10px;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      animation: zoomIn 0.3s ease;
+    }
+    
+    @keyframes zoomIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    
+    .overlay-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 2.5rem;
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    
+    .overlay-close:hover {
+      transform: rotate(90deg);
     }
 
-    /* Code cards */
-    .code-card {
-      background: #1e1e1e;
-      color: #dcdcdc;
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 15px;
-      overflow-x: auto;
-      font-family: "Consolas", "Courier New", monospace;
+    /* Code Cards */
+    .code-container {
+      margin-top: 24px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #1a1a2e;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
+    
     .code-header {
-      background: #00897b;
-      color: #fff;
-      padding: 8px 10px;
-      border-radius: 8px 8px 0 0;
-      font-weight: bold;
-      margin-bottom: 8px;
+      background: linear-gradient(90deg, rgba(0, 212, 170, 0.2), rgba(99, 102, 241, 0.2));
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
-    pre {
+    
+    .code-header-title {
+      font-family: 'Fira Code', monospace;
+      font-weight: 600;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .code-header-title::before {
+      content: '📄';
+    }
+    
+    .code-dots {
+      display: flex;
+      gap: 6px;
+    }
+    
+    .code-dots span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    
+    .code-dots span:nth-child(1) { background: #ff5f56; }
+    .code-dots span:nth-child(2) { background: #ffbd2e; }
+    .code-dots span:nth-child(3) { background: #27ca40; }
+    
+    .code-content {
+      padding: 20px;
+      overflow-x: auto;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    
+    .code-content pre {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #e0e0e0;
       margin: 0;
       white-space: pre-wrap;
       word-wrap: break-word;
     }
-
-    /* Responsive design */
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 1.4em;
-      }
-      nav a {
-        font-size: 0.9em;
-      }
-      .image-container img {
-        width: 30%;
-      }
+    
+    .code-content::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    
+    .code-content::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .code-content::-webkit-scrollbar-thumb {
+      background: rgba(0, 212, 170, 0.3);
+      border-radius: 4px;
     }
 
-    @media (max-width: 480px) {
-      nav {
-        flex-direction: column;
-        padding: 8px 0;
+    /* Results Table */
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 24px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .results-table thead {
+      background: linear-gradient(90deg, rgba(0, 212, 170, 0.2), rgba(99, 102, 241, 0.2));
+    }
+    
+    .results-table th {
+      padding: 16px 20px;
+      text-align: left;
+      font-weight: 600;
+      color: #fff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .results-table td {
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.75);
+    }
+    
+    .results-table tbody tr {
+      transition: background 0.3s ease;
+    }
+    
+    .results-table tbody tr:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+    
+    .results-table .status {
+      color: #00d4aa;
+      font-weight: 600;
+    }
+
+    /* Circuit Design Embed */
+    .circuit-embed {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      margin-top: 20px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .circuit-embed iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Credits Section */
+    .credits-card {
+      background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), rgba(99, 102, 241, 0.1));
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+    }
+    
+    .credits-card h3 {
+      color: #fff;
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+    }
+    
+    .credits-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    
+    .credits-info-item {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+    
+    .credits-info-item strong {
+      color: #00d4aa;
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(0, 0, 0, 0.3);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 40px 20px;
+      text-align: center;
+    }
+    
+    .footer-content {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .footer-logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #00d4aa, #6366f1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+    }
+    
+    .footer-text {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
       }
+      
+      section {
+        padding: 28px 20px;
+        border-radius: 16px;
+      }
+      
+      h2 {
+        font-size: 1.4rem;
+      }
+      
       nav a {
-        margin: 4px 0;
+        padding: 8px 12px;
+        font-size: 0.8rem;
       }
-      .image-container img {
-        width: 45%;
+      
+      .hero-info {
+        flex-direction: column;
+        gap: 12px;
+      }
+      
+      .image-gallery {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .credits-info {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .nav-container {
+        gap: 4px;
+      }
+      
+      nav a {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+      }
+      
+      main {
+        padding: 40px 16px;
+      }
+      
+      section {
+        padding: 24px 16px;
+        margin-bottom: 24px;
       }
     }
   </style>
 </head>
 <body>
-  <header>
+  <div class="bg-animation"></div>
+  
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-badge">IoT-Based Project</div>
     <h1>Smart Fan Control System</h1>
-    <p>Major Project by DEE | 2023-26 | Behala Government Polytechnic</p>
+    <p class="hero-subtitle">An innovative IoT-based automation project designed to control a DC fan wirelessly through a responsive web interface</p>
+    <div class="hero-info">
+      <div class="hero-info-item">
+        <span>🎓</span> Major Project DEE 2023-26
+      </div>
+      <div class="hero-info-item">
+        <span>🏛️</span> Behala Government Polytechnic
+      </div>
+      <div class="hero-info-item">
+        <span>⚡</span> Electrical Engineering
+      </div>
+    </div>
+    <div class="scroll-indicator">Scroll</div>
   </header>
 
+  <!-- Navigation -->
   <nav>
-    <a href="#overview">Overview</a>
-    <a href="#objective">Objective</a>
-    <a href="#components">Components</a>
-    <a href="#working">Working</a>
-    <a href="#software">Software</a>
-    <a href="#features">Features</a>
-    <a href="#results">Results</a>
-    <a href="#gallery">Gallery</a>
-    <a href="#credit">Credits</a>
+    <div class="nav-container">
+      <a href="#overview">Overview</a>
+      <a href="#objective">Objective</a>
+      <a href="#components">Components</a>
+      <a href="#working">Working</a>
+      <a href="#software">Software</a>
+      <a href="#features">Features</a>
+      <a href="#results">Results</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#credits">Credits</a>
+    </div>
   </nav>
 
-  <!-- === OVERVIEW === -->
-  <section id="overview">
-    <h2>Project Overview</h2>
-    <p>
-      The Smart Fan Control System is an IoT-based automation project designed to control a DC fan wirelessly through a web interface accessible on any smartphone, tablet, or computer. Using the ESP8266 microcontroller, the system hosts a local Wi-Fi web server that allows users to turn the fan ON/OFF, adjust its speed, and control its tilt angle in real time.
+  <main>
+    <!-- Overview Section -->
+    <section id="overview">
+      <h2>Project Overview</h2>
+      <p>The Smart Fan Control System is an IoT-based automation project designed to control a DC fan wirelessly through a web interface accessible on any smartphone, tablet, or computer. Using the ESP8266 microcontroller, the system hosts a local Wi-Fi web server that allows users to turn the fan ON/OFF, adjust its speed, and control its tilt angle in real time.</p>
+      <p>The fan's speed is regulated by a BTS7960 motor driver using the PWM (Pulse Width Modulation) technique, while a servo motor manages the tilting mechanism for airflow direction. The entire setup is powered by an SMPS power supply, and both the ESP8266 and Arduino Nano work together — the ESP8266 handles network communication and web control, while the Nano manages the actual motor control signals.</p>
+      <p>This project demonstrates the integration of IoT with traditional electrical systems to create energy-efficient, user-friendly, and smart home appliances that enhance comfort and convenience.</p>
+    </section>
 
-      The fan’s speed is regulated by a BTS7960 motor driver using the PWM (Pulse Width Modulation) technique, while a servo motor manages the tilting mechanism for airflow direction. The entire setup is powered by an SMPS power supply, and both the ESP8266 and Arduino Nano work together — the ESP8266 handles network communication and web control, while the Nano manages the actual motor control signals.
+    <!-- Objective Section -->
+    <section id="objective">
+      <h2>Objective</h2>
+      <p>The primary objective of the Smart Fan Control System is to design and develop a smart, automated fan that can be wirelessly operated using IoT technology. The project focuses on achieving reliable and smooth fan control through a mobile or web interface.</p>
+      <h3>Specific Objectives</h3>
+      <ul>
+        <li>To enable remote control of fan speed and movement through network</li>
+        <li>To implement PWM-based speed regulation for efficient motor performance</li>
+        <li>To provide real-time control and feedback using a responsive web interface</li>
+        <li>To design a compact and affordable IoT solution for home automation</li>
+        <li>To demonstrate the practical application of IoT and microcontrollers in electrical engineering</li>
+      </ul>
+    </section>
 
-      This project demonstrates the integration of IoT with traditional electrical systems to create energy-efficient, user-friendly, and smart home appliances that enhance comfort and convenience.
-    </p>
-  </section>
+    <!-- Components Section -->
+    <section id="components">
+      <h2>Components & Materials Used</h2>
+      <ul>
+        <li>ESP8266 — <a href="https://www.nabto.com/esp8266-for-iot-complete-guide/" target="_blank">Documentation</a></li>
+        <li>Arduino Nano — <a href="https://www.handsontec.com/dataspecs/arduino-nano.pdf" target="_blank">Datasheet</a></li>
+        <li>Mini360 DC-DC Buck Converter — <a href="https://goughlui.com/2018/07/04/tested-mini-360-mp2307-based-3a-buck-converter-module/" target="_blank">Guide</a></li>
+        <li>BTS7960 Motor Driver — <a href="https://www.ovaga.com/blog/transistor/bts7960-motor-driver-datasheet-and-circuit-diagram" target="_blank">Datasheet</a></li>
+        <li>12V DC Motor — <a href="https://www.handsontec.com/dataspecs/motor_fan/775-Motor.pdf" target="_blank">Specifications</a></li>
+        <li>SMPS Power Supply — <a href="https://www.easyelectronics.in/index.php?route=product/product&product_id=146" target="_blank">Details</a></li>
+        <li>MG995 Servo Motor — <a href="https://www.mouser.com/catalog/specsheets/Soldered_109042.pdf" target="_blank">Datasheet</a></li>
+        <li>Fan Blades and Housing</li>
+        <li>Connecting Wires, Breadboard, Soldering Kit</li>
+      </ul>
+      
+      <div class="image-gallery">
+        <div class="gallery-item" onclick="showImage(this)">
+          <img src="esp8266.jpeg" alt="ESP8266">
+        </div>
+        <div class="gallery-item" onclick="showImage(this)">
+          <img src="nano.jpg" alt="Arduino Nano">
+        </div>
+        <div class="gallery-item" onclick="showImage(this)">
+          <img src="Buck_converter.jpg" alt="Mini360 Buck Converter">
+        </div>
+        <div class="gallery-item" onclick="showImage(this)">
+          <img src="bts7960.jpg" alt="BTS7960 Motor Driver">
+        </div>
+        <div class="gallery-item" onclick="showImage(this)">
+          <img src="Dc Motor.jpg" alt="DC Motor">
+        </div>
+        <div class="gallery-item" onclick="showImage(this)">
+          <img src="smps.jpg" alt="SMPS Power Supply">
+        </div>
+        <div class="gallery-item" onclick="showImage(this)">
+          <img src="mg995.jpg" alt="MG995 Servo Motor">
+        </div>
+      </div>
+    </section>
 
-  <!-- === OBJECTIVE === -->
-  <section id="objective">
-    <h2>Objective</h2>
-    <p>
-      The primary objective of the Smart Fan Control System is to design and develop a smart, automated fan that can be wirelessly operated using IoT technology. The project focuses on achieving reliable and smooth fan control through a mobile or web interface.<br><br>
+    <!-- Working Section -->
+    <section id="working">
+      <h2>Circuit Design & Working Principle</h2>
+      <h3>Working Principle</h3>
+      <p>The working of this system is based on user interaction through a web interface that communicates with the ESP8266 microcontroller, which generates a PWM (Pulse Width Modulation) signal to control the DC motor speed via the BTS7960 motor driver.</p>
+      <p>At first, the user connects to the web interface hosted by the ESP8266. The interface provides control buttons such as ON/OFF and speed levels (50%, 75%, 100%). When the user selects any control option, a corresponding command is sent to the ESP8266 through the network.</p>
+      <p>The ESP8266 receives this input and processes it to generate a PWM signal with a specific duty cycle. This PWM signal represents the average voltage that will be applied to the motor. A higher duty cycle corresponds to higher speed, while a lower duty cycle reduces the motor speed.</p>
+      <p>The generated PWM signal is then fed into the BTS7960 motor driver module, which amplifies the control signal to a higher current suitable for driving the motor. The BTS7960 acts as a bridge between the low-power control circuit and the high-power motor, ensuring safe and efficient operation.</p>
+      <p>Finally, the BTS7960 outputs the controlled voltage and current to the DC motor according to the PWM duty cycle. This allows smooth and efficient speed variation of the fan, with quick response to user inputs through the web interface.</p>
+      
+      <h3>Circuit Design</h3>
+      <div class="circuit-embed">
+        <iframe src="https://app.cirkitdesigner.com/project/fd96a6f2-8906-49f2-a262-c72777f63179?view=interactive_preview"></iframe>
+      </div>
+    </section>
 
-      Specific objectives include:<br>
-      <li>To enable remote control of fan speed and movement through network.</li>
-      <li>To implement PWM-based speed regulation for efficient motor performance.</li>
-      <li>To provide real-time control and feedback using a responsive web interface.</li>
-      <li>To design a compact and affordable IoT solution for home automation.</li>
-      <li>To demonstrate the practical application of IoT and microcontrollers in electrical engineering.</li>
-    </p>
-  </section>
-
-  <!-- === COMPONENTS === -->
-  <section id="components">
-    <h2>Components & Materials Used</h2>
-    <ul>
-      <li>ESP8266. <a href="https://www.nabto.com/esp8266-for-iot-complete-guide/" target="_blank">Click here</a></li>
-      <li>Arduino Nano. <a href="https://www.handsontec.com/dataspecs/arduino-nano.pdf" target="_blank">Click here</a></li>
-      <li>Mini360 Dc-Dc buck converter. <a href="https://goughlui.com/2018/07/04/tested-mini-360-mp2307-based-3a-buck-converter-module/" target="_blank">Click here</a></li>
-      <li>BTS7960 Motor Driver. <a href="https://www.ovaga.com/blog/transistor/bts7960-motor-driver-datasheet-and-circuit-diagram" target="_blank">Click here</a></li>
-      <li>12V DC Motor. <a href="https://www.handsontec.com/dataspecs/motor_fan/775-Motor.pdf" target="_blank">Click here</a></li>
-      <li>SMPS Power Supply. <a href="https://www.easyelectronics.in/index.php?route=product/product&product_id=146" target="_blank">Click here</a></li>
-      <li>MG995 servo motor. <a href="https://www.mouser.com/catalog/specsheets/Soldered_109042.pdf" target="_blank">Click here</a></li>
-      <li>Fan Blades and Housing</li>
-      <li>Connecting Wires, Breadboard, Soldering Kit</li>
-    </ul>
-
-    <div class="image-container">
-      <img src="esp8266.jpeg" alt="ESP8266" onclick="showImage(this)">
-      <img src="nano.jpg" alt="Arduino Nano" onclick="showImage(this)">
-      <img src="mini.jpg" alt="Mini360" onclick="showImage(this)">
-      <img src="bts7960.jpg" alt="BTS7960" onclick="showImage(this)">
-      <img src="Dc Motor.jpg" alt="DC Motor" onclick="showImage(this)">
-      <img src="smps.jpg" alt="SMPS" onclick="showImage(this)">
-      <img src="mg995.jpg" alt="MG995" onclick="showImage(this)">
-    </div>
-
-    <div id="overlay" onclick="hideOverlay()">
-      <img id="overlay-img" src="">
-    </div>
-  </section>
-
-  <!-- === WORKING === -->
-  <section id="working">
-    <h2>Circuit Design & Working Principle</h2>
-    <p>
-      <b>Working Principle:</b><br>
-      The working of this system is based on user interaction through a web interface that communicates with the ESP8266 microcontroller, which generates a PWM (Pulse Width Modulation) signal to control the DC motor speed via the BTS7960 motor driver.<br><br>
-
-      At first, the user connects to the web interface hosted by the ESP8266. The interface provides control buttons such as ON/OFF and speed levels (50%, 75%, 100%). When the user selects any control option, a corresponding command is sent to the ESP8266 through the network.<br><br>
-
-      The ESP8266 receives this input and processes it to generate a PWM signal with a specific duty cycle. This PWM signal represents the average voltage that will be applied to the motor. A higher duty cycle corresponds to higher speed, while a lower duty cycle reduces the motor speed.<br><br>
-
-      The generated PWM signal is then fed into the BTS7960 motor driver module, which amplifies the control signal to a higher current suitable for driving the motor. The BTS7960 acts as a bridge between the low-power control circuit and the high-power motor, ensuring safe and efficient operation.<br><br>
-
-      Finally, the BTS7960 outputs the controlled voltage and current to the DC motor according to the PWM duty cycle. This allows smooth and efficient speed variation of the fan, with quick response to user inputs through the web interface.<br><br>
-
-      <b>Circuit Design:</b>
-      <div style="position: relative; width: 100%; padding-top: calc(max(56.25%, 400px));">
-  <iframe src="https://app.cirkitdesigner.com/project/fd96a6f2-8906-49f2-a262-c72777f63179?view=interactive_preview" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
-</div>
-    </p>
-  </section>
-
-  <!-- === SOFTWARE === -->
-  <section id="software">
-    <h2>Software & Programming</h2>
-    <p>
+    <!-- Software Section -->
+    <section id="software">
+      <h2>Software & Programming</h2>
+      
       <h3>🧩 Microcontroller Programming</h3>
-      <b>1. ESP8266 (NodeMCU) Programming:</b><br>
+      
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">1️⃣</span>
+            ESP8266 (NodeMCU) Programming
+          </div>
+          <p>The ESP8266 hosts a web server accessible from any browser on mobile, tablet, or laptop. It uses Wi-Fi connectivity to communicate with the user and sends real-time commands to the Arduino Nano.</p>
+          <p><strong>Key Functions:</strong></p>
+          <ul>
+            <li><code>toggleFan()</code> → Switches the fan ON/OFF</li>
+            <li><code>updateSpeed(value)</code> → Updates the fan speed via PWM</li>
+            <li><code>toggleServo(state)</code> → Controls the head tilt servo</li>
+          </ul>
+          <p>The PWM value is calculated using <code>map(fanSpeed, 0, 100, 0, 1023)</code> to match the ESP8266 PWM range.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">2️⃣</span>
+            Arduino Nano Programming
+          </div>
+          <p>Acts as the hardware controller, converting low-power signals from ESP8266 into 5V-compatible PWM signals for the BTS7960 motor driver.</p>
+          <p>Reads PWM input from ESP8266 using <code>analogRead()</code> and maps it to Nano's PWM output range using <code>map()</code> function. Handles the servo motor movement between 60° and 120° using <code>millis()</code> for smooth, non-blocking operation.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">3️⃣</span>
+            Communication & Synchronization
+          </div>
+          <p>The ESP8266 handles the user interface, network communication, and signal generation. The Arduino Nano performs real-time control of fan speed and servo movement. This separation allows modular programming and easy troubleshooting.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">4️⃣</span>
+            Programming Best Practices Applied
+          </div>
+          <ul>
+            <li><strong>Modular functions:</strong> Each control task is handled in its own function</li>
+            <li><strong>Mapping & constraining values:</strong> Prevents invalid PWM values</li>
+            <li><strong>Non-blocking servo control:</strong> Using millis() avoids delays</li>
+            <li><strong>Real-time monitoring:</strong> Serial.print() for debugging</li>
+          </ul>
+        </div>
+      </div>
 
-The ESP8266 hosts a web server accessible from any browser on mobile, tablet, or laptop.
-
-It uses Wi-Fi connectivity to communicate with the user and sends real-time commands to the Arduino Nano.
-
-Key Functions:
-
-toggleFan() → Switches the fan ON/OFF.
-
-updateSpeed(value) → Updates the fan speed via PWM.
-
-toggleServo(state) → Controls the head tilt servo.
-
-The PWM value is calculated using map(fanSpeed, 0, 100, 0, 1023) to match the ESP8266 PWM range.
-
-Commands are sent to the Arduino Nano via digital pins or analog PWM input, ensuring smooth coordination between web interface and hardware control.<br><br>
-
-<b>2. Arduino Nano Programming:</b><br>
-
-Acts as the hardware controller, converting low-power signals from ESP8266 into 5V-compatible PWM signals for the BTS7960 motor driver.
-
-Reads PWM input from ESP8266 using analogRead() and maps it to Nano’s PWM output range using map() function.
-
-Handles the servo motor movement:
-
-Moves between 60° and 120° to create a smooth oscillation for head tilt.
-
-Uses millis() and servoSpeedDelay to make the servo movement gradual and avoid abrupt motion.
-
-Ensures safety and reliability, making sure that when the fan is turned off, the servo automatically moves to the neutral 90° position.<br><br>
-
-<b>3. Communication & Synchronization:</b><br>
-The ESP8266 handles the user interface, network communication, and signal generation.
-
-The Arduino Nano performs real-time control of fan speed and servo movement.
-
-This separation allows modular programming, easy troubleshooting, and potential upgrades like:
-
-Temperature-based auto-speed control
-
-Integration with voice assistants
-
-Energy monitoring<br><br>
-
-<b>4. Programming Best Practices Applied:</b><br>
-
-Modular functions: Each control task is handled in its own function for clarity.
-
-Mapping & constraining values: Prevents invalid PWM values and ensures smooth fan operation.
-
-Non-blocking servo control: Using millis() avoids delays that could slow down fan control.
-
-Real-time monitoring: Serial.print() statements in both controllers help in debugging and monitoring the system live.<br><br>
-
-    </p>
-
-    <!-- === CODE CARDS === -->
-    <div class="code-card">
-      <div class="code-header">ESP8266 Code</div>
-      <pre>#include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
+      <!-- Code Cards -->
+      <div class="code-container">
+        <div class="code-header">
+          <span class="code-header-title">ESP8266 Code</span>
+          <div class="code-dots">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="code-content">
+          <pre>#include &lt;ESP8266WiFi.h&gt;
+#include &lt;ESP8266WebServer.h&gt;
 
 const char* ssid = "ssid";        
 const char* password = "password"; 
@@ -398,14 +1009,19 @@ String buildHTML() void setup() {
 
 void loop() {
   server.handleClient();
-}
-</pre>
-    </div>
+}</pre>
+        </div>
+      </div>
 
-    <div class="code-card">
-      <div class="code-header">Arduino Nano Code</div>
-      <pre>
-#include &lt;Servo.h&gt;
+      <div class="code-container">
+        <div class="code-header">
+          <span class="code-header-title">Arduino Nano Code</span>
+          <div class="code-dots">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="code-content">
+          <pre>#include &lt;Servo.h&gt;
 
 const int fanPWMInput = A0;
 const int fanPWMOut = 5;
@@ -458,236 +1074,240 @@ void loop() {
     else if (servoAngle > 90) servoAngle--;
     tiltServo.write(servoAngle);
   }
-}
-      </pre>
-    </div>
-
-  </section>
-
-  <!-- === FEATURES, RESULTS, GALLERY, CREDITS === -->
-  <section id="features">
-    <h2>Features</h2>
-    <p><b>1. Wifi enabled control system</b><br>
-
-Feature: You can control your fan over Wi-Fi using any browser on your phone or computer.
-
-How it works: ESP8266 connects to your home Wi-Fi network. Once connected, it hosts a mini web server. You visit the IP address of the ESP8266 to access the fan control webpage.
-
-Benefit: No physical switches needed; control your fan remotely.<br><br>
-
-<b>2. Fan ON/OFF Toggle</b><br>
-
-Feature: A large circular button on the webpage allows you to turn the fan on or off.
-
-How it works:
-
-Pressing the button sends a request to ESP8266 (/fan/on or /fan/off).
-
-The ESP updates the digital/analog output to power the fan.
-
-Visual Feedback: Button changes color:
-
-Blue → ON
-
-Red → OFF
-
-Benefit: Instant feedback on fan state, easy for anyone to use.<br><br>
-
-<b>3. Fan Speed Control (PWM)</b><br>
-
-Feature: The speed of the fan are set among three options "(i)"{50%}, "(ii)"{75%}, "(iii)"{100%} which can be selected by the three provided control buttons at the webpage.
-
-How it works:
-
-The buttons sends the value to the ESP (/speed?val=XX).
-
-ESP converts this percentage into PWM signal (511 for 50%, 767 for 75%, 1023 for 100%) for speed control.
-
-Hardware: Uses analogWrite() to control fan voltage.
-
-Benefit: Smooth speed adjustment rather than just ON/OFF.<br><br>
-
-<b>4. Servo (Fan Head Tilt)</b><br>
-
-Feature: Toggle a servo motor to adjust fan head tilt.
-
-How it works:
-
-The webpage has a switch toggle labeled “Head Tilt.”
-
-ESP receives /servo?state=on/off and powers the servo accordingly.
-
-Benefit: Adds automatic tilting capability (optional for smart fans).<br><br>
-
-<b>5. Real-time Status Display</b><br>
-Feature: The webpage shows current Fan State, Tilt State, and Speed.
-
-How it works:
-
-Updates happen using JavaScript after any action (ON/OFF, slider move, servo toggle).
-
-Users see changes immediately without refreshing the page.
-
-Benefit: User-friendly, no confusion about current settings.<br><br>
-
-<b>6. Mobile-Friendly Web Interface</b><br>
-
-Feature: Designed to be responsive on smartphones and tablets.
-
-How it works:
-
-CSS ensures layout scales for smaller screens (meta viewport).
-
-Buttons, sliders, and switches are touch-friendly.
-
-Benefit: Comfortable control from your phone anywhere at home.<br><br>
-
-<b>7. Energy-Efficient Control</b><br>
-
-In our project, Pulse Width Modulation (PWM) is used to control the speed of the DC motor efficiently. Unlike traditional methods such as using resistors or variable voltage regulators, which waste extra energy as heat, PWM works by rapidly switching the motor’s supply voltage ON and OFF at a very high frequency. The ratio of the ON time to the total cycle time (called the duty cycle) determines the average voltage applied to the motor.
-
-<br>When the duty cycle is reduced, the motor receives power in short pulses instead of a continuously lowered voltage. Because the switching device (like a MOSFET or motor driver) is either fully ON or fully OFF, it experiences very low power loss — almost no energy is wasted as heat during control. The motor’s inertia smooths out these rapid pulses, so it still runs smoothly at the required speed.
-
-<br>This method makes PWM highly energy-efficient, as it only delivers the exact amount of power needed to maintain the desired motor speed, without unnecessary energy loss. As a result, our system consumes less power, produces less heat, and increases the overall efficiency and lifespan of the motor and driver components.<br><br>
-
-<b>8. Safety Defaults</b><br>
-Feature: When turning off the fan:
-
-Fan speed is zero
-
-Servo is locked to a safe position
-
-Benefit: Prevents fan from moving unexpectedly or drawing power unnecessarily.
-
-Optional Enhancements for Future Versions
-
-Add temperature/humidity sensor to auto-adjust fan speed.
-
-Add schedule control (fan turns on/off at specific times).
-
-Add voice control using Alexa or Google Home.<br><br></p>
-  </section>
-
-  <section id="results">
-    <h2>Results & Testing</h2>
-    <p><b>🔹 1. System Setup</b><br>
-
-The project setup consisted of:
-
-ESP8266 (NodeMCU) as the main microcontroller and Wi-Fi web server.
-
-BTS7960 43A motor driver connected to a 12V DC motor (acting as the fan).
-
-Servo motor for tilt control.
-
-Web interface hosted by ESP8266 for wireless fan control (via mobile or laptop).
-
-SMPS (12V, 5A) as the power supply.
-
-Connections were properly made — the motor driver was connected to ESP8266 PWM pins for speed control, and the servo was connected to a digital pin for tilt movement.<br><br>
-
-<b>🔹 2. Web Interface Testing</b><br>
-
-Once the ESP8266 was powered ON:
-
-The module connected to Wi-Fi (subuz_ network).
-
-The IP address was displayed on the Serial Monitor (e.g., 192.168.1.20).
-
-Opening this IP in a web browser loaded the Fan Control Dashboard, containing:
-
-ON/OFF toggle button
-
-Speed control slider (0–255 PWM)
-
-Tilt/Servo control button
-
-<br>✅ Result:
-The web interface worked smoothly and was responsive on both mobile and desktop browsers.
-Each command was executed almost instantly, with negligible delay.<br><br>
-
-<b>🔹 3. Motor Speed Control Testing</b><br>
-
-PWM signals from the ESP8266 were sent to the BTS7960 inputs.
-
-The fan speed changed smoothly as the slider on the web page was moved.
-
-The motor ran steadily without jerks or vibration even at low PWM values.
-
-The response was almost real-time, showing stable speed variation.
-
-<br>✅ Result:
-Speed control worked effectively through PWM, providing precise and stable fan operation.<br><br>
-
-<b>🔹 4. Tilt Control Testing</b><br>
-
-A servo motor connected to D2 was used for automatic tilt adjustment.
-
-When the tilt ON button was pressed → servo started sweeping continuously.
-
-When the tilt OFF button was pressed → servo stopped and automatically locked at 90°.
-
-<br>✅ Result:
-Tilt control was accurate, smooth, and reliable. The servo stopped firmly at the locked position after fan shutdown.<br><br>
-
-<b>🔹 5. Safety and Stability</b><br>
-
-The BTS7960 driver stayed within safe temperature limits even under continuous use.
-
-Power draw was stable (~2.5A at full load).
-
-Wi-Fi connection remained steady throughout long-duration tests.
-
-After power interruptions, the system restarted safely with the fan turned OFF by default.
-
-<br>✅ Result:
-The overall system performance was reliable, stable, and safe for continuous operation.<br><br>
-
-<b>🔹 6. Overall Outcome</b><br>
-Feature	Test	Result<br>
-Wi-Fi connection	Auto reconnect	✅<br>
-Fan ON/OFF	Web toggle	✅<br>
-Speed control	Real-time PWM	✅<br>
-Tilt control	Servo function	✅<br>
-Responsiveness	< 0.3s delay	✅<br>
-Energy efficiency	PWM optimized	✅<br>
-✅ Final Result<br>
-
-The Smart Fan Control System successfully enabled wireless operation of a DC fan, providing real-time speed control and automatic tilt adjustment through an ESP8266-hosted web dashboard.
-The system was low-cost, responsive, and energy-efficient, making it a smart and scalable home automation prototype.<br></p>
-  </section>
-
-  <section id="gallery">
-    <h2>Project Gallery</h2>
-    <div class="image-container">
-      <img src="Side_view.jpg" alt="Fan Prototype 1" onclick="showImage(this)">
-      <img src="Front_view.jpg" alt="Fan Prototype 2" onclick="showImage(this)">
-      <img src="Back_view.jpg" alt="Fan Prototype 3" onclick="showImage(this)">
-      <img src="Hot_view.jpg" alt="Fan Prototype 3" onclick="showImage(this)">
-    </div>
-  </section>
-
-  <section id="credit">
-    <h2>Credits</h2>
-    <p>Designed and implemented by<br><br>
-      <b>Department of Electrical Engineering Students|| 2023-26 Batch<br>
-      Sem : 5th<br>
-      Year : Final<br>
-      Behala Government Polytechnic.</p></b>
-  </section>
-
+}</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features">
+      <h2>Features</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">📶</span>
+            Wi-Fi Enabled Control System
+          </div>
+          <p>Control your fan over Wi-Fi using any browser on your phone or computer. ESP8266 connects to your home Wi-Fi network and hosts a mini web server. No physical switches needed; control your fan remotely.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">🔘</span>
+            Fan ON/OFF Toggle
+          </div>
+          <p>A large circular button on the webpage allows you to turn the fan on or off. The button changes color for visual feedback — Blue for ON and Red for OFF. Instant response for easy operation.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">⚡</span>
+            Fan Speed Control (PWM)
+          </div>
+          <p>The speed of the fan can be set among three options: 50%, 75%, and 100%. The ESP converts this percentage into PWM signal (511 for 50%, 767 for 75%, 1023 for 100%) for smooth speed adjustment.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">🔄</span>
+            Servo (Fan Head Tilt)
+          </div>
+          <p>Toggle a servo motor to adjust fan head tilt using the "Head Tilt" switch on the webpage. ESP receives commands and powers the servo accordingly for automatic tilting capability.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">📊</span>
+            Real-time Status Display
+          </div>
+          <p>The webpage shows current Fan State, Tilt State, and Speed. Updates happen using JavaScript after any action, so users see changes immediately without refreshing the page.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">📱</span>
+            Mobile-Friendly Web Interface
+          </div>
+          <p>Designed to be responsive on smartphones and tablets. CSS ensures layout scales for smaller screens with touch-friendly buttons, sliders, and switches.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">🌿</span>
+            Energy-Efficient Control
+          </div>
+          <p>PWM works by rapidly switching the motor's supply voltage ON and OFF at high frequency. The motor only receives the exact amount of power needed, consuming less power and producing less heat.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">🛡️</span>
+            Safety Defaults
+          </div>
+          <p>When turning off the fan, speed is set to zero and servo is locked to a safe position. This prevents unexpected movement or unnecessary power draw.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results">
+      <h2>Results & Testing</h2>
+      
+      <h3>🔹 System Setup</h3>
+      <p>The project setup consisted of ESP8266 (NodeMCU) as the main microcontroller and Wi-Fi web server, BTS7960 43A motor driver connected to a 12V DC motor, servo motor for tilt control, and SMPS (12V, 5A) as the power supply.</p>
+      
+      <h3>🔹 Web Interface Testing</h3>
+      <p>Once the ESP8266 was powered ON, the module connected to Wi-Fi and the IP address was displayed on the Serial Monitor. Opening this IP in a web browser loaded the Fan Control Dashboard containing ON/OFF toggle button, speed control slider, and tilt/servo control button.</p>
+      <p>✅ <strong>Result:</strong> The web interface worked smoothly and was responsive on both mobile and desktop browsers. Each command was executed almost instantly, with negligible delay.</p>
+      
+      <h3>🔹 Motor Speed Control Testing</h3>
+      <p>PWM signals from the ESP8266 were sent to the BTS7960 inputs. The fan speed changed smoothly as the slider on the web page was moved. The motor ran steadily without jerks or vibration even at low PWM values.</p>
+      <p>✅ <strong>Result:</strong> Speed control worked effectively through PWM, providing precise and stable fan operation.</p>
+      
+      <h3>🔹 Tilt Control Testing</h3>
+      <p>A servo motor connected to D2 was used for automatic tilt adjustment. When the tilt ON button was pressed, servo started sweeping continuously. When OFF, servo stopped and automatically locked at 90°.</p>
+      <p>✅ <strong>Result:</strong> Tilt control was accurate, smooth, and reliable.</p>
+      
+      <h3>🔹 Overall Outcome</h3>
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Test</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Wi-Fi Connection</td>
+            <td>Auto reconnect</td>
+            <td class="status">✅ Pass</td>
+          </tr>
+          <tr>
+            <td>Fan ON/OFF</td>
+            <td>Web toggle</td>
+            <td class="status">✅ Pass</td>
+          </tr>
+          <tr>
+            <td>Speed Control</td>
+            <td>Real-time PWM</td>
+            <td class="status">✅ Pass</td>
+          </tr>
+          <tr>
+            <td>Tilt Control</td>
+            <td>Servo function</td>
+            <td class="status">✅ Pass</td>
+          </tr>
+          <tr>
+            <td>Responsiveness</td>
+            <td>&lt; 0.3s delay</td>
+            <td class="status">✅ Pass</td>
+          </tr>
+          <tr>
+            <td>Energy Efficiency</td>
+            <td>PWM optimized</td>
+            <td class="status">✅ Pass</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <p style="margin-top: 24px;">The Smart Fan Control System successfully enabled wireless operation of a DC fan, providing real-time speed control and automatic tilt adjustment through an ESP8266-hosted web dashboard. The system was low-cost, responsive, and energy-efficient, making it a smart and scalable home automation prototype.</p>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+      <h2>Project Gallery</h2>
+      <div class="image-gallery">
+        <div class="gallery-item" onclick="showImage(this)">
+          <img src="Side_view.jpg" alt="Side View">
+        </div>
+        <div class="gallery-item" onclick="showImage(this)">
+          <img src="Front_view.jpg" alt="Front View">
+        </div>
+        <div class="gallery-item" onclick="showImage(this)">
+          <img src="Back_view.jpg" alt="Back View">
+        </div>
+        <div class="gallery-item" onclick="showImage(this)">
+          <img src="Main_view.jpg" alt="Main View">
+        </div>
+      </div>
+    </section>
+
+    <!-- Credits Section -->
+    <section id="credits">
+      <h2>Credits</h2>
+      <div class="credits-card">
+        <h3>Designed and Implemented by</h3>
+        <p>Department of Electrical Engineering Students</p>
+        <div class="credits-info">
+          <div class="credits-info-item">
+            <strong>Batch:</strong> 2023-26
+          </div>
+          <div class="credits-info-item">
+            <strong>Semester:</strong> 5th
+          </div>
+          <div class="credits-info-item">
+            <strong>Year:</strong> Final
+          </div>
+        </div>
+        <p style="margin-top: 20px; font-size: 1.1rem;"><strong>Behala Government Polytechnic</strong></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
   <footer>
-    &copy; 2025 Smart Fan Control System Project. All rights reserved.
+    <div class="footer-content">
+      <div class="footer-logo">Smart Fan Control System</div>
+      <p class="footer-text">© 2025 Smart Fan Control System Project. All rights reserved.</p>
+    </div>
   </footer>
 
+  <!-- Image Overlay -->
+  <div id="overlay" onclick="hideOverlay()">
+    <span class="overlay-close">&times;</span>
+    <img id="overlay-img" src="" alt="Preview">
+  </div>
+
   <script>
-    function showImage(img) {
-      document.getElementById("overlay-img").src = img.src;
-      document.getElementById("overlay").style.display = "flex";
+    function showImage(element) {
+      const img = element.querySelector('img') || element;
+      document.getElementById('overlay-img').src = img.src;
+      document.getElementById('overlay').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
     }
+    
     function hideOverlay() {
-      document.getElementById("overlay").style.display = "none";
+      document.getElementById('overlay').style.display = 'none';
+      document.body.style.overflow = '';
     }
+    
+    // Close overlay with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') hideOverlay();
+    });
+    
+    // Smooth reveal on scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('section').forEach(section => {
+      section.style.opacity = '0';
+      section.style.transform = 'translateY(30px)';
+      section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(section);
+    });
   </script>
 </body>
 </html>
