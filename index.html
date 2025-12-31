@@ -1557,7 +1557,7 @@
           <img src="nano.jpg" alt="Arduino Nano">
         </div>
         <div class="gallery-item" onclick="showImage(this)">
-          <img src="Mini360 Buck Converter.jpg" alt="Mini360 Buck Converter">
+          <img src="Buck_converter.jpg" alt="Mini360 Buck Converter">
         </div>
         <div class="gallery-item" onclick="showImage(this)">
           <img src="bts7960.jpg" alt="BTS7960 Motor Driver">
@@ -1670,563 +1670,41 @@
           </div>
         </div>
         <div class="code-content">
-          <pre>#include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
+          <pre>#include &lt;ESP8266WiFi.h&gt;
+#include &lt;ESP8266WebServer.h&gt;
 
-const char* ssid = "subuz_";        
-const char* password = "SMwifi@24"; 
+const char* ssid = "ssid";        
+const char* password = "password"; 
 
 ESP8266WebServer server(80);
 
 bool fanState = false;
-int fanSpeed = 75;
+int fanSpeed = 75;  // Default speed (used only after turning ON)
 bool servoState = false;
 
 const int fanPin = D1;   
 const int servoPin = D2; 
 
-String buildHTML() {
-  String html = R"rawliteral(
-<!DOCTYPE html>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta charset="UTF-8">
-  <title>Smart Fan Control</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      color: #333;
-    }
-    
-    .container {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 30px;
-      padding: 40px 30px;
-      max-width: 420px;
-      width: 100%;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    }
-    
-    .header {
-      text-align: center;
-      margin-bottom: 35px;
-    }
-    
-    .header h1 {
-      font-size: 28px;
-      font-weight: 700;
-      color: #667eea;
-      margin-bottom: 8px;
-    }
-    
-    .connection-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      color: #666;
-    }
-    
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #4ade80;
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-    
-    .power-section {
-      text-align: center;
-      margin-bottom: 35px;
-    }
-    
-    .power-btn {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      border: none;
-      font-size: 24px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    }
-    
-    .power-btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-    
-    .power-btn:active::before {
-      width: 300px;
-      height: 300px;
-    }
-    
-    .power-btn.on {
-      background: linear-gradient(135deg, #4ade80, #22c55e);
-      color: white;
-      box-shadow: 0 10px 40px rgba(74, 222, 128, 0.4);
-    }
-    
-    .power-btn.off {
-      background: linear-gradient(135deg, #ef4444, #dc2626);
-      color: white;
-      box-shadow: 0 10px 40px rgba(239, 68, 68, 0.4);
-    }
-    
-    .power-btn:active {
-      transform: scale(0.95);
-    }
-    
-    .section {
-      margin-bottom: 30px;
-    }
-    
-    .section-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: #666;
-      margin-bottom: 15px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    
-    .speed-controls {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    
-    .speed-btn {
-      flex: 1;
-      height: 70px;
-      border-radius: 16px;
-      border: 2px solid #e5e7eb;
-      background: white;
-      font-size: 20px;
-      font-weight: 700;
-      color: #9ca3af;
-      cursor: pointer;
-      transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .speed-btn::after {
-      content: attr(data-label);
-      position: absolute;
-      bottom: 8px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-    }
-    
-    .speed-btn:not(:disabled):hover {
-      border-color: #667eea;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-    }
-    
-    .speed-btn.active {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      border-color: #667eea;
-      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-    }
-    
-    .speed-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-    
-    .tilt-control {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #f9fafb;
-      padding: 18px 20px;
-      border-radius: 16px;
-      transition: all 0.3s;
-    }
-    
-    .tilt-control.disabled {
-      opacity: 0.5;
-    }
-    
-    .tilt-label {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 15px;
-      font-weight: 600;
-      color: #374151;
-    }
-    
-    .tilt-icon {
-      width: 40px;
-      height: 40px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 20px;
-    }
-    
-    .switch {
-      position: relative;
-      width: 56px;
-      height: 32px;
-    }
-    
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: #d1d5db;
-      transition: 0.4s;
-      border-radius: 34px;
-    }
-    
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 24px;
-      width: 24px;
-      left: 4px;
-      bottom: 4px;
-      background: white;
-      transition: 0.4s;
-      border-radius: 50%;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-    
-    input:checked + .slider {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-    }
-    
-    input:checked + .slider:before {
-      transform: translateX(24px);
-    }
-    
-    input:disabled + .slider {
-      cursor: not-allowed;
-      opacity: 0.5;
-    }
-    
-    .status-bar {
-      background: #f9fafb;
-      border-radius: 16px;
-      padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      text-align: center;
-    }
-    
-    .status-item {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    
-    .status-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: #9ca3af;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    
-    .status-value {
-      font-size: 18px;
-      font-weight: 700;
-      color: #374151;
-    }
-    
-    .status-value.active {
-      color: #667eea;
-    }
-    
-    @media (max-width: 480px) {
-      .container {
-        padding: 30px 20px;
-      }
-      
-      .power-btn {
-        width: 120px;
-        height: 120px;
-        font-size: 20px;
-      }
-      
-      .speed-btn {
-        height: 60px;
-        font-size: 18px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>Smart Fan Control</h1>
-      <div class="connection-status">
-        <span class="status-dot"></span>
-        <span>Connected</span>
-      </div>
-    </div>
-    
-    <div class="power-section">
-      <button id="powerBtn" class="power-btn off" onclick="togglePower()">OFF</button>
-    </div>
-    
-    <div class="section">
-      <div class="section-title">Fan Speed</div>
-      <div class="speed-controls">
-        <button id="speed50" class="speed-btn" data-label="Low" onclick="setSpeed(50)" disabled>I</button>
-        <button id="speed75" class="speed-btn" data-label="Medium" onclick="setSpeed(75)" disabled>II</button>
-        <button id="speed100" class="speed-btn" data-label="High" onclick="setSpeed(100)" disabled>III</button>
-      </div>
-    </div>
-    
-    <div class="section">
-      <div class="section-title">Oscillation</div>
-      <div class="tilt-control" id="tiltControl">
-        <div class="tilt-label">
-          <div class="tilt-icon">↔</div>
-          <span>Head Tilt</span>
-        </div>
-        <label class="switch">
-          <input type="checkbox" id="servoToggle" onchange="toggleServo(this.checked)" disabled>
-          <span class="slider"></span>
-        </label>
-      </div>
-    </div>
-    
-    <div class="status-bar">
-      <div class="status-item">
-        <div class="status-label">Status</div>
-        <div class="status-value" id="fanStatus">OFF</div>
-      </div>
-      <div class="status-item">
-        <div class="status-label">Speed</div>
-        <div class="status-value" id="speedValue">0%</div>
-      </div>
-      <div class="status-item">
-        <div class="status-label">Tilt</div>
-        <div class="status-value" id="tiltStatus">OFF</div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    let lastAction = 0;
-    
-    window.onload = function() {
-      fetch('/status')
-        .then(r => r.json())
-        .then(data => {
-          updateUI(data);
-        })
-        .catch(e => console.error('Failed to load state:', e));
-    };
-    
-    function updateUI(data) {
-      const powerBtn = document.getElementById('powerBtn');
-      const fanStatus = document.getElementById('fanStatus');
-      const speedValue = document.getElementById('speedValue');
-      const tiltStatus = document.getElementById('tiltStatus');
-      const servoToggle = document.getElementById('servoToggle');
-      
-      if (data.fan) {
-        powerBtn.className = 'power-btn on';
-        powerBtn.textContent = 'ON';
-        fanStatus.textContent = 'ON';
-        fanStatus.classList.add('active');
-        speedValue.textContent = data.speed + '%';
-        enableControls();
-        setSpeedActive(data.speed);
-      } else {
-        powerBtn.className = 'power-btn off';
-        powerBtn.textContent = 'OFF';
-        fanStatus.textContent = 'OFF';
-        fanStatus.classList.remove('active');
-        speedValue.textContent = '0%';
-        disableControls();
-        clearSpeedActive();
-      }
-      
-      servoToggle.checked = data.servo;
-      tiltStatus.textContent = data.servo ? 'ON' : 'OFF';
-      if (data.servo) tiltStatus.classList.add('active');
-      else tiltStatus.classList.remove('active');
-    }
-    
-    function togglePower() {
-      if (Date.now() - lastAction < 500) return;
-      lastAction = Date.now();
-      
-      const powerBtn = document.getElementById('powerBtn');
-      const isOff = powerBtn.classList.contains('off');
-      
-      fetch(isOff ? '/fan/on' : '/fan/off')
-        .then(() => fetch('/status'))
-        .then(r => r.json())
-        .then(data => updateUI(data))
-        .catch(e => console.error('Error:', e));
-    }
-    
-    function setSpeed(speed) {
-      if (Date.now() - lastAction < 300) return;
-      lastAction = Date.now();
-      
-      fetch('/speed?val=' + speed)
-        .then(() => {
-          document.getElementById('speedValue').textContent = speed + '%';
-          setSpeedActive(speed);
-        })
-        .catch(e => console.error('Error:', e));
-    }
-    
-    function setSpeedActive(speed) {
-      clearSpeedActive();
-      const btn = document.getElementById('speed' + speed);
-      if (btn) btn.classList.add('active');
-    }
-    
-    function clearSpeedActive() {
-      [50, 75, 100].forEach(s => {
-        document.getElementById('speed' + s).classList.remove('active');
-      });
-    }
-    
-    function toggleServo(state) {
-      if (Date.now() - lastAction < 300) return;
-      lastAction = Date.now();
-      
-      fetch('/servo?state=' + (state ? 'on' : 'off'))
-        .then(() => {
-          const tiltStatus = document.getElementById('tiltStatus');
-          tiltStatus.textContent = state ? 'ON' : 'OFF';
-          if (state) tiltStatus.classList.add('active');
-          else tiltStatus.classList.remove('active');
-        })
-        .catch(e => console.error('Error:', e));
-    }
-    
-    function enableControls() {
-      [50, 75, 100].forEach(s => {
-        document.getElementById('speed' + s).disabled = false;
-      });
-      document.getElementById('servoToggle').disabled = false;
-      document.getElementById('tiltControl').classList.remove('disabled');
-    }
-    
-    function disableControls() {
-      [50, 75, 100].forEach(s => {
-        document.getElementById('speed' + s).disabled = true;
-      });
-      document.getElementById('servoToggle').disabled = false;
-      document.getElementById('servoToggle').checked = false;
-      document.getElementById('tiltControl').classList.add('disabled');
-      document.getElementById('tiltStatus').textContent = 'OFF';
-      document.getElementById('tiltStatus').classList.remove('active');
-    }
-  </script>
-</body>
-</html>
-)rawliteral";
-  
-  return html;
-}
-
-void setup() {
+String buildHTML() void setup() {
   Serial.begin(115200);
   pinMode(fanPin, OUTPUT);
   analogWriteRange(1023);
   analogWriteFreq(5000);
-  analogWrite(fanPin, 0);
-  
   pinMode(servoPin, OUTPUT);
   digitalWrite(servoPin, LOW);
 
   WiFi.begin(ssid, password);
   Serial.print("Connecting to Wi-Fi");
-  
-  int timeout = 0;
-  while (WiFi.status() != WL_CONNECTED && timeout < 30) {
-    delay(500);
-    Serial.print(".");
-    timeout++;
-  }
-  
-  if (WiFi.status() == WL_CONNECTED) {
-    Serial.println("\n✅ Connected!");
-    Serial.print("IP Address: ");
-    Serial.println(WiFi.localIP());
-  } else {
-    Serial.println("\n❌ Failed to connect to WiFi");
-  }
+  while (WiFi.status() != WL_CONNECTED) { delay(500); Serial.print("."); }
+  Serial.println("\n✅ Connected!");
+  Serial.print("IP Address: "); Serial.println(WiFi.localIP());
 
-  server.on("/", []() {
-    server.send(200, "text/html", buildHTML());
-  });
-
-  server.on("/status", []() {
-    String json = "{\"fan\":";
-    json += fanState ? "true" : "false";
-    json += ",\"speed\":" + String(fanSpeed);
-    json += ",\"servo\":";
-    json += servoState ? "true" : "false";
-    json += "}";
-    server.send(200, "application/json", json);
-  });
+  server.on("/", []() { server.send(200, "text/html", buildHTML()); });
 
   server.on("/fan/on", []() {
     fanState = true;
-    fanSpeed = 75;
-    int pwmVal = map(fanSpeed, 50, 100, 512, 1023);
+    fanSpeed = 75;  // Default 75% when turned ON
+    int pwmVal = map(fanSpeed, 0, 100, 512, 1023);
     analogWrite(fanPin, pwmVal);
     Serial.println("FAN: ON (Default 75%)");
     server.send(200, "text/plain", "OK");
@@ -2242,55 +1720,29 @@ void setup() {
   });
 
   server.on("/speed", []() {
-    if (!server.hasArg("val")) {
-      server.send(400, "text/plain", "Missing val parameter");
-      return;
-    }
-    
     fanSpeed = server.arg("val").toInt();
-    fanSpeed = constrain(fanSpeed, 50, 100);
-    
+    fanSpeed = constrain(fanSpeed, 0, 100);
     if (fanState) {
-      int pwmVal = map(fanSpeed, 50, 100, 512, 1023);
+      int pwmVal = map(fanSpeed, 0, 100, 512, 1023);
       analogWrite(fanPin, pwmVal);
-      Serial.print("SPD: "); Serial.print(fanSpeed); Serial.println("%");
     }
-    
+    Serial.print("SPD: "); Serial.println(fanSpeed);
     server.send(200, "text/plain", "OK");
   });
 
   server.on("/servo", []() {
-    if (!server.hasArg("state")) {
-      server.send(400, "text/plain", "Missing state parameter");
-      return;
-    }
-    
-    if (fanState) {
-      servoState = (server.arg("state") == "on");
-      digitalWrite(servoPin, servoState ? HIGH : LOW);
-      Serial.print("SERVO: "); Serial.println(servoState ? "ON" : "OFF");
-    } else {
-      servoState = false;
-      digitalWrite(servoPin, LOW);
-      Serial.println("SERVO: Blocked (Fan is OFF)");
-    }
-    
+    servoState = (server.arg("state") == "on");
+    digitalWrite(servoPin, servoState ? HIGH : LOW);
+    Serial.print("SERVO: "); Serial.println(servoState ? "ON" : "OFF");
     server.send(200, "text/plain", "OK");
-  });
-
-  server.onNotFound([]() {
-    server.send(404, "text/plain", "Not Found");
   });
 
   server.begin();
   Serial.println("HTTP server started");
-  Serial.println("Ready to accept connections!");
 }
 
 void loop() {
   server.handleClient();
-  yield();
-}
 }</pre>
         </div>
       </div>
@@ -2529,7 +1981,7 @@ void loop() {
           <img src="Back_view.jpg" alt="Back View">
         </div>
         <div class="gallery-item" onclick="showImage(this)">
-          <img src="Main_View.jpg" alt="Main View">
+          <img src="Main_view.jpg" alt="Main View">
         </div>
       </div>
     </section>
