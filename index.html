@@ -1670,11 +1670,11 @@
           </div>
         </div>
         <div class="code-content">
-          <pre>#include &lt;ESP8266WiFi.h&gt;
-#include &lt;ESP8266WebServer.h&gt;
+          <pre>#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
 
-const char* ssid = "ssid";        
-const char* password = "password"; 
+const char* ssid = "subuz_";        
+const char* password = "SMwifi@24"; 
 
 ESP8266WebServer server(80);
 
@@ -1685,64 +1685,295 @@ bool servoState = false;
 const int fanPin = D1;   
 const int servoPin = D2; 
 
-String buildHTML() void setup() {
+String buildHTML() {
+  String html = "<!DOCTYPE html><html><head>";
+  html += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">";
+  html += "<title>Smart Fan</title>";
+
+  // --- CSS ---
+  html += "<style>";
+  html += "body{margin:0;padding:0;font-family:'Poppins',sans-serif;"
+          "background:#f4f7fb;color:#222;display:flex;flex-direction:column;"
+          "align-items:center;justify-content:center;height:100vh;}";
+  html += ".container{text-align:center;width:90%;max-width:360px;}";
+  
+  // Fan ON/OFF Button
+  html += ".circle-btn{width:110px;height:110px;border-radius:50%;border:none;"
+          "background:linear-gradient(145deg,#007bff,#0056d6);color:white;"
+          "font-size:18px;font-weight:bold;margin:10px;cursor:pointer;"
+          "transition:all 0.2s;box-shadow:0 4px 12px rgba(0,0,0,0.2);}"; 
+  html += ".circle-btn.off{background:linear-gradient(145deg,#dc3545,#a71d2a);}"; 
+  html += ".circle-btn:active{transform:scale(0.96);}";
+
+  // Speed Buttons (Roman numerals)
+  html += ".speed-btn{width:80px;height:80px;border-radius:50%;border:none;"
+          "background:linear-gradient(145deg,#6c757d,#495057);color:white;"
+          "font-size:22px;font-weight:bold;margin:8px;cursor:pointer;"
+          "transition:all 0.2s;box-shadow:0 3px 10px rgba(0,0,0,0.2);}"; 
+  html += ".speed-btn.active{background:linear-gradient(145deg,#28a745,#218838);"
+          "box-shadow:0 0 10px rgba(40,167,69,0.6);}";
+  html += ".speed-btn:disabled{opacity:0.5;cursor:not-allowed;}";
+
+  // Servo switch
+  html += ".switch{position:relative;display:inline-block;width:60px;height:32px;}";
+  html += ".switch input{display:none;}";
+  html += ".slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;"
+          "background:#ccc;transition:.4s;border-radius:34px;}";
+  html += ".slider:before{position:absolute;content:'';height:24px;width:24px;"
+          "left:4px;bottom:4px;background:white;transition:.4s;border-radius:50%;}";
+  html += "input:checked + .slider{background:#007bff;}";
+  html += "input:checked + .slider:before{transform:translateX(26px);}";
+  html += "input:disabled + .slider{opacity:0.5;cursor:not-allowed;}";
+
+  // Status box
+  html += "#statusBox{margin-top:20px;padding:10px 0;font-size:16px;color:#333;"
+          "border-top:1px solid #ddd;width:100%;}";
+  html += "</style></head><body>";
+
+  // --- HTML ---
+  html += "<div class='container'>";
+  html += "<button id='fanButton' class='circle-btn off' onclick='toggleFan()'>OFF</button>";
+
+  html += "<p><b>Fan Speed</b></p>";
+  html += "<div>";
+  html += "<button id='speed50' class='speed-btn' onclick='setSpeed(50)' disabled>I</button>";
+  html += "<button id='speed75' class='speed-btn' onclick='setSpeed(75)' disabled>II</button>";
+  html += "<button id='speed100' class='speed-btn' onclick='setSpeed(100)' disabled>III</button>";
+  html += "</div>";
+
+  html += "<p>Head Tilt</p>";
+  html += "<label class='switch'><input type='checkbox' id='servo' onchange='toggleServo(this.checked)' disabled><span class='slider'></span></label>";
+
+  html += "<div id='statusBox'>";
+  html += "Fan: <span id='fanState'>OFF</span> | ";
+  html += "Tilt: <span id='tiltState'>OFF</span> | ";
+  html += "Speed: <span id='speedVal'>0</span>%";
+  html += "</div></div>";
+
+  // --- JavaScript ---
+  html += "<script>";
+  
+  // Load current state on page load
+  html += "window.onload=function(){"
+          "fetch('/status').then(r=>r.json()).then(data=>{"
+          "let btn=document.getElementById('fanButton');"
+          "if(data.fan){"
+          "btn.classList.remove('off');btn.innerText='ON';"
+          "document.getElementById('fanState').innerText='ON';"
+          "document.getElementById('speedVal').innerText=data.speed;"
+          "enableControls();"
+          "setSpeed(data.speed);"
+          "}else{"
+          "btn.classList.add('off');btn.innerText='OFF';"
+          "document.getElementById('fanState').innerText='OFF';"
+          "document.getElementById('speedVal').innerText='0';"
+          "disableControls();"
+          "}"
+          "document.getElementById('servo').checked=data.servo;"
+          "document.getElementById('tiltState').innerText=data.servo?'ON':'OFF';"
+          "}).catch(e=>console.error('Failed to load state:',e));"
+          "};";
+
+  // Debounce mechanism
+  html += "let lastClick=0;";
+  
+  html += "function toggleFan(){"
+          "if(Date.now()-lastClick<500)return;"
+          "lastClick=Date.now();"
+          "let btn=document.getElementById('fanButton');"
+          "let isOff=btn.classList.contains('off');"
+          "if(isOff){"
+          "fetch('/fan/on').then(()=>{"
+          "btn.classList.remove('off');btn.innerText='ON';"
+          "document.getElementById('fanState').innerText='ON';"
+          "enableControls();"
+          "setSpeed(75);"
+          "}).catch(e=>console.error('Error:',e));"
+          "}else{"
+          "fetch('/fan/off').then(()=>{"
+          "btn.classList.add('off');btn.innerText='OFF';"
+          "document.getElementById('fanState').innerText='OFF';"
+          "document.getElementById('servo').checked=false;"
+          "document.getElementById('tiltState').innerText='OFF';"
+          "clearActiveSpeed();"
+          "document.getElementById('speedVal').innerText='0';"
+          "disableControls();"
+          "}).catch(e=>console.error('Error:',e));"
+          "}}";
+
+  html += "function setSpeed(val){"
+          "if(document.getElementById('fanState').innerText=='OFF')return;"
+          "if(Date.now()-lastClick<300)return;"
+          "lastClick=Date.now();"
+          "fetch('/speed?val='+val).then(()=>{"
+          "document.getElementById('speedVal').innerText=val;"
+          "clearActiveSpeed();"
+          "document.getElementById('speed'+val).classList.add('active');"
+          "}).catch(e=>console.error('Error:',e));"
+          "}";
+
+  html += "function clearActiveSpeed(){"
+          "['50','75','100'].forEach(s=>"
+          "document.getElementById('speed'+s).classList.remove('active'));"
+          "}";
+
+  html += "function toggleServo(state){"
+          "if(Date.now()-lastClick<300)return;"
+          "lastClick=Date.now();"
+          "fetch('/servo?state='+(state?'on':'off')).then(()=>{"
+          "document.getElementById('tiltState').innerText=state?'ON':'OFF';"
+          "}).catch(e=>console.error('Error:',e));"
+          "}";
+
+  html += "function enableControls(){"
+          "['speed50','speed75','speed100'].forEach(id=>"
+          "document.getElementById(id).disabled=false);"
+          "document.getElementById('servo').disabled=false;"
+          "}";
+
+  html += "function disableControls(){"
+          "['speed50','speed75','speed100'].forEach(id=>"
+          "document.getElementById(id).disabled=true);"
+          "document.getElementById('servo').disabled=true;"
+          "}";
+  
+  html += "</script>";
+
+  html += "</body></html>";
+  return html;
+}
+
+void setup() {
   Serial.begin(115200);
   pinMode(fanPin, OUTPUT);
   analogWriteRange(1023);
   analogWriteFreq(5000);
+  analogWrite(fanPin, 0); // Ensure fan starts OFF
+  
   pinMode(servoPin, OUTPUT);
   digitalWrite(servoPin, LOW);
 
   WiFi.begin(ssid, password);
   Serial.print("Connecting to Wi-Fi");
-  while (WiFi.status() != WL_CONNECTED) { delay(500); Serial.print("."); }
-  Serial.println("\n✅ Connected!");
-  Serial.print("IP Address: "); Serial.println(WiFi.localIP());
+  
+  // Add connection timeout
+  int timeout = 0;
+  while (WiFi.status() != WL_CONNECTED && timeout < 30) {
+    delay(500);
+    Serial.print(".");
+    timeout++;
+  }
+  
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("\n✅ Connected!");
+    Serial.print("IP Address: ");
+    Serial.println(WiFi.localIP());
+  } else {
+    Serial.println("\n❌ Failed to connect to WiFi");
+    Serial.println("Please check credentials and try again");
+  }
 
-  server.on("/", []() { server.send(200, "text/html", buildHTML()); });
+  // Main page
+  server.on("/", []() {
+    server.send(200, "text/html", buildHTML());
+  });
 
+  // Status endpoint - returns current state as JSON
+  server.on("/status", []() {
+    String json = "{\"fan\":";
+    json += fanState ? "true" : "false";
+    json += ",\"speed\":" + String(fanSpeed);
+    json += ",\"servo\":";
+    json += servoState ? "true" : "false";
+    json += "}";
+    server.send(200, "application/json", json);
+  });
+
+  // Fan ON
   server.on("/fan/on", []() {
     fanState = true;
     fanSpeed = 75;  // Default 75% when turned ON
-    int pwmVal = map(fanSpeed, 0, 100, 512, 1023);
+    
+    // FIXED: Map from 50-100% to 512-1023 (minimum speed to start fan)
+    int pwmVal = map(fanSpeed, 50, 100, 512, 1023);
     analogWrite(fanPin, pwmVal);
+    
     Serial.println("FAN: ON (Default 75%)");
     server.send(200, "text/plain", "OK");
   });
 
+  // Fan OFF
   server.on("/fan/off", []() {
     fanState = false;
-    analogWrite(fanPin, 0);
+    analogWrite(fanPin, 0);  // Truly OFF = 0 PWM
+    
+    // Safety: Turn off servo when fan is off
     servoState = false;
     digitalWrite(servoPin, LOW);
+    
     Serial.println("FAN: OFF + SERVO LOCK");
     server.send(200, "text/plain", "OK");
   });
 
+  // Speed adjustment
   server.on("/speed", []() {
-    fanSpeed = server.arg("val").toInt();
-    fanSpeed = constrain(fanSpeed, 0, 100);
-    if (fanState) {
-      int pwmVal = map(fanSpeed, 0, 100, 512, 1023);
-      analogWrite(fanPin, pwmVal);
+    if (!server.hasArg("val")) {
+      server.send(400, "text/plain", "Missing val parameter");
+      return;
     }
-    Serial.print("SPD: "); Serial.println(fanSpeed);
+    
+    fanSpeed = server.arg("val").toInt();
+    fanSpeed = constrain(fanSpeed, 50, 100);  // Only allow 50-100% range
+    
+    if (fanState) {
+      // FIXED: Proper PWM mapping
+      int pwmVal = map(fanSpeed, 50, 100, 512, 1023);
+      analogWrite(fanPin, pwmVal);
+      Serial.print("SPD: "); Serial.print(fanSpeed); Serial.println("%");
+    } else {
+      Serial.println("SPD: Fan is OFF, ignoring speed change");
+    }
+    
     server.send(200, "text/plain", "OK");
   });
 
+  // Servo control
   server.on("/servo", []() {
-    servoState = (server.arg("state") == "on");
-    digitalWrite(servoPin, servoState ? HIGH : LOW);
-    Serial.print("SERVO: "); Serial.println(servoState ? "ON" : "OFF");
+    if (!server.hasArg("state")) {
+      server.send(400, "text/plain", "Missing state parameter");
+      return;
+    }
+    
+    // Safety: Only allow servo if fan is ON
+    if (fanState) {
+      servoState = (server.arg("state") == "on");
+      digitalWrite(servoPin, servoState ? HIGH : LOW);
+      Serial.print("SERVO: "); Serial.println(servoState ? "ON" : "OFF");
+    } else {
+      servoState = false;
+      digitalWrite(servoPin, LOW);
+      Serial.println("SERVO: Blocked (Fan is OFF)");
+    }
+    
     server.send(200, "text/plain", "OK");
+  });
+
+  // 404 handler
+  server.onNotFound([]() {
+    server.send(404, "text/plain", "Not Found");
   });
 
   server.begin();
   Serial.println("HTTP server started");
+  Serial.println("Ready to accept connections!");
 }
 
 void loop() {
   server.handleClient();
+  
+  // Watchdog reset (prevent crashes)
+  yield();
+}
 }</pre>
         </div>
       </div>
