@@ -1083,13 +1083,14 @@
         flex-wrap: nowrap;
         justify-content: center;
         align-items: center;
-        gap: 16px;
+        gap: 12px;
         opacity: 0;
         visibility: hidden;
         transition: all 0.3s ease;
         z-index: 1000;
-        padding-top: env(safe-area-inset-top);
-        padding-bottom: env(safe-area-inset-bottom);
+        padding: 60px 20px 40px;
+        padding-top: max(60px, env(safe-area-inset-top));
+        padding-bottom: max(40px, env(safe-area-inset-bottom));
         overflow-y: auto;
       }
 
@@ -1113,15 +1114,17 @@
       .nav-close {
         display: block;
         position: absolute;
-        top: 20px;
-        right: 20px;
-        font-size: 2rem;
+        top: max(20px, env(safe-area-inset-top));
+        right: max(20px, env(safe-area-inset-right));
+        font-size: 2.5rem;
         color: #00897b;
         cursor: pointer;
         padding: 10px;
         background: none;
         border: none;
         z-index: 1001;
+        min-width: 48px;
+        min-height: 48px;
       }
 
       .hero-info {
@@ -1341,10 +1344,10 @@
         margin-bottom: 10px;
       }
 
-      /* Image gallery - 2 columns on small mobile */
+      /* Image gallery - 1 column on small mobile for better visibility */
       .image-gallery {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        grid-template-columns: 1fr;
+        gap: 12px;
       }
 
       .gallery-item {
