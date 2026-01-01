@@ -1483,13 +1483,16 @@
     <div class="nav-container">
       <a href="#overview">Overview</a>
       <a href="#objective">Objective</a>
+      <a href="#technical">Technical</a>
       <a href="#components">Components</a>
       <a href="#working">Working</a>
       <a href="#software">Software</a>
       <a href="#features">Features</a>
       <a href="#results">Results</a>
+      <a href="#future">Future</a>
       <a href="#gallery">Gallery</a>
       <a href="#credits">Credits</a>
+      <a href="#references">References</a>
     </div>
   </nav>
 
@@ -1507,7 +1510,67 @@
         control, while the Nano manages the actual motor control signals.</p>
       <p>This project demonstrates the integration of IoT with traditional electrical systems to create
         energy-efficient, user-friendly, and smart home appliances that enhance comfort and convenience.</p>
+
+      <h3>🔧 Problem Statement</h3>
+      <p>The motivation for this project stems from several inherent limitations found in traditional fan control
+        mechanisms:</p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">👆</span>
+            Manual Dependency
+          </div>
+          <p>Conventional fans require physical proximity for operation, which can be inconvenient or even impossible
+            for the elderly or differently-abled individuals.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">🔥</span>
+            Inefficient Regulation
+          </div>
+          <p>Standard resistive regulators vary motor speed by dissipating excess energy as heat. This process is
+            inherently wasteful and leads to higher electrical losses.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">⚙️</span>
+            Mechanical Wear
+          </div>
+          <p>Physical toggles and speed switches are prone to mechanical failure over time, requiring frequent
+            maintenance.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">🔒</span>
+            Fixed Oscillation
+          </div>
+          <p>Standard fans typically use a mechanical clutch for oscillation, which offers no flexibility in controlling
+            the specific angle of airflow.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">📊</span>
+            Lack of Feedback
+          </div>
+          <p>There is usually no visual interface to confirm the fan's speed percentage or state when the user is not in
+            direct line-of-sight of the appliance.</p>
+        </div>
+      </div>
+
+      <h3>🎯 Key Achievement</h3>
+      <div class="feature-card"
+        style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(0, 150, 136, 0.1)); border-color: rgba(76, 175, 80, 0.3);">
+        <div class="feature-title">
+          <span class="icon"
+            style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(0, 150, 136, 0.2));">⚡</span>
+          40% Energy Efficiency Improvement
+        </div>
+        <p>The project successfully demonstrates a <strong>40% improvement in energy efficiency at 50% speed</strong>
+          compared to traditional resistive regulation methods, validating its practical utility in modern electrical
+          engineering.</p>
+      </div>
     </section>
+
 
     <!-- Objective Section -->
     <section id="objective">
@@ -1525,7 +1588,75 @@
       </ul>
     </section>
 
+    <!-- Technical Background Section -->
+    <section id="technical">
+      <h2>Technical Background</h2>
+
+      <h3>🌐 IoT in Power Systems</h3>
+      <p>The Internet of Things (IoT) represents a paradigm shift where physical objects are embedded with electronics,
+        software, and sensors to enable data exchange over a network. In the context of Electrical Engineering,
+        IoT-based automation is increasingly applied to home appliances to enhance energy management and user
+        convenience.</p>
+      <p>Our project utilizes the ESP8266 as a core communication hub because it offers an integrated Wi-Fi stack and
+        the ability to host a standalone web server, making it superior to traditional Bluetooth or IR-based solutions
+        for residential automation.</p>
+
+      <h3>🔌 Dual Microcontroller Design</h3>
+      <p>During the planning phase, we evaluated various microcontrollers including Arduino Uno and Raspberry Pi. We
+        decided on a <strong>Dual Microcontroller Strategy</strong>:</p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">📡</span>
+            ESP8266 (NodeMCU)
+          </div>
+          <p>Chosen for its low cost and high-speed Wi-Fi capabilities. It handles all incoming HTTP requests and serves
+            the HTML interface. <strong>3.3V logic with integrated Wi-Fi.</strong></p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">🎛️</span>
+            Arduino Nano
+          </div>
+          <p>While the ESP8266 is powerful, it has limited PWM pins and can experience latency when handling both
+            networking and high-speed motor timing. The Nano handles timing-sensitive tasks like servo sweeping and
+            BTS7960 signal processing. <strong>ATmega328P, 5V Logic.</strong></p>
+        </div>
+      </div>
+
+      <h3>⚡ PWM vs. Resistive Regulation</h3>
+      <p>A critical aspect of our design involved comparing traditional speed regulators with PWM technology:</p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">🔥</span>
+            Traditional Regulators (Inefficient)
+          </div>
+          <p>Use a series resistor or capacitor to drop the voltage. Results in significant power loss as heat (Power
+            Loss = I² × R), making them inherently inefficient and generating unwanted heat.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">✅</span>
+            PWM Technology (Efficient)
+          </div>
+          <p>Controls the average power by rapidly switching the supply ON and OFF. By varying the "Duty Cycle," the
+            effective voltage is adjusted <strong>without wasting energy through resistance</strong>. Our testing
+            confirmed up to <strong>40% reduction in power consumption</strong> at lower speeds.</p>
+        </div>
+      </div>
+
+      <h3>🔄 H-Bridge Motor Control</h3>
+      <p>Controlling a high-torque 775 DC Motor requires an interface that can handle significant current and voltage
+        levels. Standard motor drivers like the L298N are often insufficient for the 12V loads required for fan blades.
+      </p>
+      <p>The <strong>BTS7960 High-Current Motor Driver</strong> was selected due to its <strong>43A capacity</strong>
+        and dual H-bridge configuration. The H-bridge allows for bidirectional control and, more importantly,
+        high-frequency PWM. This ensures smooth operation at various speed levels without overheating.</p>
+    </section>
+
     <!-- Components Section -->
+
     <section id="components">
       <h2>Components & Materials Used</h2>
       <ul>
@@ -1557,7 +1688,7 @@
           <img src="nano.jpg" alt="Arduino Nano">
         </div>
         <div class="gallery-item" onclick="showImage(this)">
-          <img src="Mini360 Buck Converter.jpg" alt="Mini360 Buck Converter">
+          <img src="Buck_converter.jpg" alt="Mini360 Buck Converter">
         </div>
         <div class="gallery-item" onclick="showImage(this)">
           <img src="bts7960.jpg" alt="BTS7960 Motor Driver">
@@ -1598,7 +1729,160 @@
       <div class="circuit-embed" id="circuit-container">
         <!-- Iframe loaded via JavaScript to prevent auto-scroll -->
       </div>
+
+      <h3>🔌 Three-Stage System Architecture</h3>
+      <p>The system functions in three primary stages:</p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">1️⃣</span>
+            Interface Stage
+          </div>
+          <p>A user interacts with a web-hosted dashboard on a smartphone or PC. The responsive web interface sends
+            commands over HTTP.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">2️⃣</span>
+            Processing Stage
+          </div>
+          <p>The ESP8266 receives the command and communicates with the Arduino Nano via dedicated digital/analog pins.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">3️⃣</span>
+            Execution Stage
+          </div>
+          <p>The Arduino Nano drives the BTS7960 Motor Driver and the MG995 Servo Motor to produce physical movement.
+          </p>
+        </div>
+      </div>
+
+      <h3>⚡ Power Distribution Network</h3>
+      <p>The power system uses three separate Buck Converters to isolate components from electrical noise:</p>
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Voltage Rail</th>
+            <th>Components Powered</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>3.3V Line</strong></td>
+            <td>ESP8266 (NodeMCU)</td>
+            <td class="status">Wi-Fi chip is sensitive to higher voltages</td>
+          </tr>
+          <tr>
+            <td><strong>5V Line</strong></td>
+            <td>Arduino Nano, BTS7960 Logic</td>
+            <td class="status">Standard logic level for ATmega328P</td>
+          </tr>
+          <tr>
+            <td><strong>6V Line</strong></td>
+            <td>MG995 Servo Motor</td>
+            <td class="status">Higher torque for oscillation mechanism</td>
+          </tr>
+          <tr>
+            <td><strong>12V Line</strong></td>
+            <td>775 DC Motor, BTS7960 Power</td>
+            <td class="status">High-power rail from SMPS directly</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>🔗 Pin-to-Pin Connection Table</h3>
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>From Component</th>
+            <th>Pin</th>
+            <th>To Component</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ESP8266</td>
+            <td><code>D1</code></td>
+            <td>Arduino Nano <code>A0</code></td>
+            <td class="status">Transmit Speed (PWM)</td>
+          </tr>
+          <tr>
+            <td>ESP8266</td>
+            <td><code>D2</code></td>
+            <td>Arduino Nano <code>D2</code></td>
+            <td class="status">Transmit Tilt Toggle</td>
+          </tr>
+          <tr>
+            <td>Arduino Nano</td>
+            <td><code>D5</code></td>
+            <td>BTS7960 <code>RPWM</code></td>
+            <td class="status">Right PWM Signal</td>
+          </tr>
+          <tr>
+            <td>Arduino Nano</td>
+            <td><code>D6</code></td>
+            <td>BTS7960 <code>L_EN</code></td>
+            <td class="status">Left Enable</td>
+          </tr>
+          <tr>
+            <td>Arduino Nano</td>
+            <td><code>D7</code></td>
+            <td>BTS7960 <code>R_EN</code></td>
+            <td class="status">Right Enable</td>
+          </tr>
+          <tr>
+            <td>Arduino Nano</td>
+            <td><code>D9</code></td>
+            <td>MG995 <code>Signal</code></td>
+            <td class="status">Servo PWM Control</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>📊 PWM Duty Cycle Calculations</h3>
+      <p>The software ensures precise voltage regulation through the following PWM mapping:</p>
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Speed Level</th>
+            <th>ESP8266 Output (10-bit)</th>
+            <th>Nano Output (8-bit)</th>
+            <th>Effective Motor Voltage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>OFF</td>
+            <td><code>0</code></td>
+            <td><code>0</code></td>
+            <td class="status">0V</td>
+          </tr>
+          <tr>
+            <td>50% (Low)</td>
+            <td><code>512</code></td>
+            <td><code>127</code></td>
+            <td class="status">6V</td>
+          </tr>
+          <tr>
+            <td>75% (Medium)</td>
+            <td><code>768</code></td>
+            <td><code>191</code></td>
+            <td class="status">9V</td>
+          </tr>
+          <tr>
+            <td>100% (High)</td>
+            <td><code>1023</code></td>
+            <td><code>255</code></td>
+            <td class="status">12V</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
+
 
     <!-- Software Section -->
     <section id="software">
@@ -1670,11 +1954,11 @@
           </div>
         </div>
         <div class="code-content">
-          <pre>#include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
+          <pre>#include &lt;ESP8266WiFi.h&gt;
+#include &lt;ESP8266WebServer.h&gt;
 
-const char* ssid = "subuz_";        
-const char* password = "SMwifi@24"; 
+const char* ssid = "ssid";        
+const char* password = "password"; 
 
 ESP8266WebServer server(80);
 
@@ -1685,161 +1969,10 @@ bool servoState = false;
 const int fanPin = D1;   
 const int servoPin = D2; 
 
+// HTML generation function (abbreviated for brevity)
 String buildHTML() {
-  String html = "<!DOCTYPE html><html><head>";
-  html += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">";
-  html += "<title>Smart Fan</title>";
-
-  // --- CSS ---
-  html += "<style>";
-  html += "body{margin:0;padding:0;font-family:'Poppins',sans-serif;"
-          "background:#f4f7fb;color:#222;display:flex;flex-direction:column;"
-          "align-items:center;justify-content:center;height:100vh;}";
-  html += ".container{text-align:center;width:90%;max-width:360px;}";
-  
-  // Fan ON/OFF Button
-  html += ".circle-btn{width:110px;height:110px;border-radius:50%;border:none;"
-          "background:linear-gradient(145deg,#007bff,#0056d6);color:white;"
-          "font-size:18px;font-weight:bold;margin:10px;cursor:pointer;"
-          "transition:all 0.2s;box-shadow:0 4px 12px rgba(0,0,0,0.2);}"; 
-  html += ".circle-btn.off{background:linear-gradient(145deg,#dc3545,#a71d2a);}"; 
-  html += ".circle-btn:active{transform:scale(0.96);}";
-
-  // Speed Buttons (Roman numerals)
-  html += ".speed-btn{width:80px;height:80px;border-radius:50%;border:none;"
-          "background:linear-gradient(145deg,#6c757d,#495057);color:white;"
-          "font-size:22px;font-weight:bold;margin:8px;cursor:pointer;"
-          "transition:all 0.2s;box-shadow:0 3px 10px rgba(0,0,0,0.2);}"; 
-  html += ".speed-btn.active{background:linear-gradient(145deg,#28a745,#218838);"
-          "box-shadow:0 0 10px rgba(40,167,69,0.6);}";
-  html += ".speed-btn:disabled{opacity:0.5;cursor:not-allowed;}";
-
-  // Servo switch
-  html += ".switch{position:relative;display:inline-block;width:60px;height:32px;}";
-  html += ".switch input{display:none;}";
-  html += ".slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;"
-          "background:#ccc;transition:.4s;border-radius:34px;}";
-  html += ".slider:before{position:absolute;content:'';height:24px;width:24px;"
-          "left:4px;bottom:4px;background:white;transition:.4s;border-radius:50%;}";
-  html += "input:checked + .slider{background:#007bff;}";
-  html += "input:checked + .slider:before{transform:translateX(26px);}";
-  html += "input:disabled + .slider{opacity:0.5;cursor:not-allowed;}";
-
-  // Status box
-  html += "#statusBox{margin-top:20px;padding:10px 0;font-size:16px;color:#333;"
-          "border-top:1px solid #ddd;width:100%;}";
-  html += "</style></head><body>";
-
-  // --- HTML ---
-  html += "<div class='container'>";
-  html += "<button id='fanButton' class='circle-btn off' onclick='toggleFan()'>OFF</button>";
-
-  html += "<p><b>Fan Speed</b></p>";
-  html += "<div>";
-  html += "<button id='speed50' class='speed-btn' onclick='setSpeed(50)' disabled>I</button>";
-  html += "<button id='speed75' class='speed-btn' onclick='setSpeed(75)' disabled>II</button>";
-  html += "<button id='speed100' class='speed-btn' onclick='setSpeed(100)' disabled>III</button>";
-  html += "</div>";
-
-  html += "<p>Head Tilt</p>";
-  html += "<label class='switch'><input type='checkbox' id='servo' onchange='toggleServo(this.checked)' disabled><span class='slider'></span></label>";
-
-  html += "<div id='statusBox'>";
-  html += "Fan: <span id='fanState'>OFF</span> | ";
-  html += "Tilt: <span id='tiltState'>OFF</span> | ";
-  html += "Speed: <span id='speedVal'>0</span>%";
-  html += "</div></div>";
-
-  // --- JavaScript ---
-  html += "<script>";
-  
-  // Load current state on page load
-  html += "window.onload=function(){"
-          "fetch('/status').then(r=>r.json()).then(data=>{"
-          "let btn=document.getElementById('fanButton');"
-          "if(data.fan){"
-          "btn.classList.remove('off');btn.innerText='ON';"
-          "document.getElementById('fanState').innerText='ON';"
-          "document.getElementById('speedVal').innerText=data.speed;"
-          "enableControls();"
-          "setSpeed(data.speed);"
-          "}else{"
-          "btn.classList.add('off');btn.innerText='OFF';"
-          "document.getElementById('fanState').innerText='OFF';"
-          "document.getElementById('speedVal').innerText='0';"
-          "disableControls();"
-          "}"
-          "document.getElementById('servo').checked=data.servo;"
-          "document.getElementById('tiltState').innerText=data.servo?'ON':'OFF';"
-          "}).catch(e=>console.error('Failed to load state:',e));"
-          "};";
-
-  // Debounce mechanism
-  html += "let lastClick=0;";
-  
-  html += "function toggleFan(){"
-          "if(Date.now()-lastClick<500)return;"
-          "lastClick=Date.now();"
-          "let btn=document.getElementById('fanButton');"
-          "let isOff=btn.classList.contains('off');"
-          "if(isOff){"
-          "fetch('/fan/on').then(()=>{"
-          "btn.classList.remove('off');btn.innerText='ON';"
-          "document.getElementById('fanState').innerText='ON';"
-          "enableControls();"
-          "setSpeed(75);"
-          "}).catch(e=>console.error('Error:',e));"
-          "}else{"
-          "fetch('/fan/off').then(()=>{"
-          "btn.classList.add('off');btn.innerText='OFF';"
-          "document.getElementById('fanState').innerText='OFF';"
-          "document.getElementById('servo').checked=false;"
-          "document.getElementById('tiltState').innerText='OFF';"
-          "clearActiveSpeed();"
-          "document.getElementById('speedVal').innerText='0';"
-          "disableControls();"
-          "}).catch(e=>console.error('Error:',e));"
-          "}}";
-
-  html += "function setSpeed(val){"
-          "if(document.getElementById('fanState').innerText=='OFF')return;"
-          "if(Date.now()-lastClick<300)return;"
-          "lastClick=Date.now();"
-          "fetch('/speed?val='+val).then(()=>{"
-          "document.getElementById('speedVal').innerText=val;"
-          "clearActiveSpeed();"
-          "document.getElementById('speed'+val).classList.add('active');"
-          "}).catch(e=>console.error('Error:',e));"
-          "}";
-
-  html += "function clearActiveSpeed(){"
-          "['50','75','100'].forEach(s=>"
-          "document.getElementById('speed'+s).classList.remove('active'));"
-          "}";
-
-  html += "function toggleServo(state){"
-          "if(Date.now()-lastClick<300)return;"
-          "lastClick=Date.now();"
-          "fetch('/servo?state='+(state?'on':'off')).then(()=>{"
-          "document.getElementById('tiltState').innerText=state?'ON':'OFF';"
-          "}).catch(e=>console.error('Error:',e));"
-          "}";
-
-  html += "function enableControls(){"
-          "['speed50','speed75','speed100'].forEach(id=>"
-          "document.getElementById(id).disabled=false);"
-          "document.getElementById('servo').disabled=false;"
-          "}";
-
-  html += "function disableControls(){"
-          "['speed50','speed75','speed100'].forEach(id=>"
-          "document.getElementById(id).disabled=true);"
-          "document.getElementById('servo').disabled=true;"
-          "}";
-  
-  html += "</script>";
-
-  html += "</body></html>";
+  // Returns HTML/CSS/JS for the web dashboard
+  // Full code available in project files
   return html;
 }
 
@@ -1848,132 +1981,59 @@ void setup() {
   pinMode(fanPin, OUTPUT);
   analogWriteRange(1023);
   analogWriteFreq(5000);
-  analogWrite(fanPin, 0); // Ensure fan starts OFF
-  
   pinMode(servoPin, OUTPUT);
   digitalWrite(servoPin, LOW);
 
   WiFi.begin(ssid, password);
   Serial.print("Connecting to Wi-Fi");
-  
-  // Add connection timeout
-  int timeout = 0;
-  while (WiFi.status() != WL_CONNECTED && timeout < 30) {
-    delay(500);
-    Serial.print(".");
-    timeout++;
-  }
-  
-  if (WiFi.status() == WL_CONNECTED) {
-    Serial.println("\n✅ Connected!");
-    Serial.print("IP Address: ");
-    Serial.println(WiFi.localIP());
-  } else {
-    Serial.println("\n❌ Failed to connect to WiFi");
-    Serial.println("Please check credentials and try again");
-  }
+  while (WiFi.status() != WL_CONNECTED) { delay(500); Serial.print("."); }
+  Serial.println("\n✅ Connected!");
+  Serial.print("IP Address: "); Serial.println(WiFi.localIP());
 
-  // Main page
-  server.on("/", []() {
-    server.send(200, "text/html", buildHTML());
-  });
+  server.on("/", []() { server.send(200, "text/html", buildHTML()); });
 
-  // Status endpoint - returns current state as JSON
-  server.on("/status", []() {
-    String json = "{\"fan\":";
-    json += fanState ? "true" : "false";
-    json += ",\"speed\":" + String(fanSpeed);
-    json += ",\"servo\":";
-    json += servoState ? "true" : "false";
-    json += "}";
-    server.send(200, "application/json", json);
-  });
-
-  // Fan ON
   server.on("/fan/on", []() {
     fanState = true;
     fanSpeed = 75;  // Default 75% when turned ON
-    
-    // FIXED: Map from 50-100% to 512-1023 (minimum speed to start fan)
-    int pwmVal = map(fanSpeed, 50, 100, 512, 1023);
+    int pwmVal = map(fanSpeed, 0, 100, 512, 1023);
     analogWrite(fanPin, pwmVal);
-    
     Serial.println("FAN: ON (Default 75%)");
     server.send(200, "text/plain", "OK");
   });
 
-  // Fan OFF
   server.on("/fan/off", []() {
     fanState = false;
-    analogWrite(fanPin, 0);  // Truly OFF = 0 PWM
-    
-    // Safety: Turn off servo when fan is off
+    analogWrite(fanPin, 0);
     servoState = false;
     digitalWrite(servoPin, LOW);
-    
     Serial.println("FAN: OFF + SERVO LOCK");
     server.send(200, "text/plain", "OK");
   });
 
-  // Speed adjustment
   server.on("/speed", []() {
-    if (!server.hasArg("val")) {
-      server.send(400, "text/plain", "Missing val parameter");
-      return;
-    }
-    
     fanSpeed = server.arg("val").toInt();
-    fanSpeed = constrain(fanSpeed, 50, 100);  // Only allow 50-100% range
-    
+    fanSpeed = constrain(fanSpeed, 0, 100);
     if (fanState) {
-      // FIXED: Proper PWM mapping
-      int pwmVal = map(fanSpeed, 50, 100, 512, 1023);
+      int pwmVal = map(fanSpeed, 0, 100, 512, 1023);
       analogWrite(fanPin, pwmVal);
-      Serial.print("SPD: "); Serial.print(fanSpeed); Serial.println("%");
-    } else {
-      Serial.println("SPD: Fan is OFF, ignoring speed change");
     }
-    
+    Serial.print("SPD: "); Serial.println(fanSpeed);
     server.send(200, "text/plain", "OK");
   });
 
-  // Servo control
   server.on("/servo", []() {
-    if (!server.hasArg("state")) {
-      server.send(400, "text/plain", "Missing state parameter");
-      return;
-    }
-    
-    // Safety: Only allow servo if fan is ON
-    if (fanState) {
-      servoState = (server.arg("state") == "on");
-      digitalWrite(servoPin, servoState ? HIGH : LOW);
-      Serial.print("SERVO: "); Serial.println(servoState ? "ON" : "OFF");
-    } else {
-      servoState = false;
-      digitalWrite(servoPin, LOW);
-      Serial.println("SERVO: Blocked (Fan is OFF)");
-    }
-    
+    servoState = (server.arg("state") == "on");
+    digitalWrite(servoPin, servoState ? HIGH : LOW);
+    Serial.print("SERVO: "); Serial.println(servoState ? "ON" : "OFF");
     server.send(200, "text/plain", "OK");
-  });
-
-  // 404 handler
-  server.onNotFound([]() {
-    server.send(404, "text/plain", "Not Found");
   });
 
   server.begin();
   Serial.println("HTTP server started");
-  Serial.println("Ready to accept connections!");
 }
 
 void loop() {
   server.handleClient();
-  
-  // Watchdog reset (prevent crashes)
-  yield();
-}
 }</pre>
         </div>
       </div>
@@ -2198,6 +2258,144 @@ void loop() {
       </p>
     </section>
 
+    <!-- Future Scope Section -->
+    <section id="future">
+      <h2>Future Scope</h2>
+      <p>The Smart Fan Control System has significant potential for expansion and improvement. The following
+        enhancements are planned for future versions:</p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">☁️</span>
+            Cloud Integration
+          </div>
+          <p>Upgrading the system from a local Wi-Fi server to a global cloud platform (like <strong>MQTT</strong>) for
+            remote access anywhere in the world. This would enable users to control their fan from any location with
+            internet connectivity.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">🌡️</span>
+            Autonomous Control
+          </div>
+          <p>Adding a <strong>DHT11 temperature sensor</strong> to allow the fan to automatically adjust its speed based
+            on the room temperature. This would create a truly "smart" adaptive cooling system.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">🎤</span>
+            Voice Compatibility
+          </div>
+          <p>Integrating with <strong>Amazon Alexa</strong> or <strong>Google Home</strong> for hands-free voice
+            operation. Users could control the fan using simple voice commands like "Turn on the fan" or "Set fan speed
+            to 50%."</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">📊</span>
+            Energy Monitoring
+          </div>
+          <p>Adding current sensors to track real-time power consumption and display energy usage statistics on the
+            dashboard, helping users understand and optimize their energy usage.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">⏰</span>
+            Scheduling System
+          </div>
+          <p>Implementing a timer and scheduling feature to automatically turn the fan on/off at preset times, perfect
+            for sleep schedules or when leaving for work.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-title">
+            <span class="icon">📱</span>
+            Dedicated Mobile App
+          </div>
+          <p>Developing native Android and iOS applications with push notifications, offline control capability, and
+            more intuitive user experience.</p>
+        </div>
+      </div>
+
+      <div class="feature-card"
+        style="margin-top: 24px; background: linear-gradient(135deg, rgba(0, 188, 212, 0.1), rgba(0, 150, 136, 0.1)); border-color: rgba(0, 188, 212, 0.3);">
+        <div class="feature-title">
+          <span class="icon"
+            style="background: linear-gradient(135deg, rgba(0, 188, 212, 0.2), rgba(0, 150, 136, 0.2));">🌐</span>
+          Project Updates
+        </div>
+        <p>Every detail of our project and every future update will be provided on our Blog Report page at:<br>
+          <a href="https://itz-subbuz.github.io/Major-Project-2025/" target="_blank"
+            style="color: #00897b; font-weight: 600;">https://itz-subbuz.github.io/Major-Project-2025/</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- References Section -->
+    <section id="references">
+      <h2>References & Bibliography</h2>
+      <p>The theoretical foundation, hardware design, and software implementation of this project were guided by the
+        following academic and technical resources:</p>
+
+      <h3>📚 Academic Handbooks</h3>
+      <ol>
+        <li>K. Billings and T. Morey, <em>"Switchmode Power Supply Handbook,"</em> 3rd ed. New York, NY, USA:
+          McGraw-Hill Education. — Essential for SMPS integration and buck converter selection.</li>
+        <li>V. Ramanarayanan, <em>"Course Material on Switched Mode Power Conversion,"</em> Bangalore, India: Dept. of
+          Electrical Engineering, Indian Institute of Science, 2007. — Provided fundamental equations for SMPC.</li>
+      </ol>
+
+      <h3>📄 Technical Documentation</h3>
+      <ol start="3">
+        <li>M. Naganetra, R. Ramya, and D. Rohini, <em>"Pulse Width Modulation,"</em> International Journal of Research
+          in Engineering, Science and Management, vol. 2, no. 12, pp. 38-39, Dec. 2019. — Theoretical basis for PWM duty
+          cycle calculations.</li>
+        <li>Arduino S.r.l., <em>"Arduino Nano R4 Datasheet,"</em> SKU: ABX00142, Oct. 2025. [Online]. Available: <a
+            href="https://docs.arduino.cc/" target="_blank">https://docs.arduino.cc/</a></li>
+        <li>Pieter P., <em>"A Beginner's Guide to the ESP8266,"</em> 2017. [Online]. Available: <a
+            href="https://tttapa.github.io/ESP8266/" target="_blank">https://tttapa.github.io/ESP8266/</a></li>
+      </ol>
+
+      <h3>🔧 Hardware References</h3>
+      <ol start="6">
+        <li>OMRON Corporation, <em>"Technical Explanation for Servomotors and Servo Drives,"</em> CSM Servo_TG_E_1_1. —
+          Pulse timing requirements for servo oscillation programming.</li>
+        <li><em>"H-bridge Concept Introduction: Working Principle and DC Motor Control,"</em> Technical Tutorial. — Dual
+          H-bridge topology and logic-level requirements.</li>
+      </ol>
+
+      <h3>🔗 Project Resources</h3>
+      <ol start="8">
+        <li>S. Mondal, T. Khan, P. Das, S. Paik, S. Das, and S. Das, <em>"Smart Fan Control System,"</em> Major Project
+          Blog Report, 2025. [Online]. Available: <a href="https://itz-subbuz.github.io/Major-Project-2025/"
+            target="_blank">https://itz-subbuz.github.io/Major-Project-2025/</a></li>
+      </ol>
+
+      <div class="feature-card" style="margin-top: 24px;">
+        <div class="feature-title">
+          <span class="icon">📖</span>
+          Component Datasheets
+        </div>
+        <ul>
+          <li><strong>ESP8266 Wi-Fi Module:</strong> <a href="https://www.nabto.com/esp8266-for-iot-complete-guide/"
+              target="_blank">Espressif Systems / Nabto Documentation</a></li>
+          <li><strong>BTS7960 H-Bridge Driver:</strong> <a
+              href="https://www.ovaga.com/blog/transistor/bts7960-motor-driver-datasheet-and-circuit-diagram"
+              target="_blank">Infineon Technologies / Ovaga Datasheet</a></li>
+          <li><strong>MG995 Servo Motor:</strong> <a
+              href="https://www.mouser.com/catalog/specsheets/Soldered_109042.pdf" target="_blank">TowerPro / Mouser
+              Specifications</a></li>
+          <li><strong>775 DC Motor:</strong> <a href="https://www.handsontec.com/dataspecs/motor_fan/775-Motor.pdf"
+              target="_blank">HandsOnTech Specifications</a></li>
+        </ul>
+      </div>
+    </section>
+
     <!-- Gallery Section -->
     <section id="gallery">
       <h2>Project Gallery</h2>
@@ -2212,7 +2410,7 @@ void loop() {
           <img src="Back_view.jpg" alt="Back View">
         </div>
         <div class="gallery-item" onclick="showImage(this)">
-          <img src="Main_View.jpg" alt="Main View">
+          <img src="Main_view.jpg" alt="Main View">
         </div>
       </div>
     </section>
@@ -2221,8 +2419,52 @@ void loop() {
     <section id="credits">
       <h2>Credits</h2>
       <div class="credits-card">
-        <h3>Designed and Implemented by</h3>
-        <p>Department of Electrical Engineering Students</p>
+        <h3>🎓 Designed and Implemented by</h3>
+        <p style="margin-bottom: 24px;">Department of Electrical Engineering Students</p>
+
+        <!-- Team Members -->
+        <div class="feature-grid" style="margin-bottom: 24px;">
+          <div class="feature-card" style="text-align: center;">
+            <div class="feature-title" style="justify-content: center;">
+              <span class="icon">👤</span>
+              Subhankar Mondal
+            </div>
+            <p style="margin: 0; font-size: 0.85rem; color: #00897b;">Team Member</p>
+          </div>
+
+          <div class="feature-card" style="text-align: center;">
+            <div class="feature-title" style="justify-content: center;">
+              <span class="icon">👤</span>
+              Trisha Khan
+            </div>
+            <p style="margin: 0; font-size: 0.85rem; color: #00897b;">Team Member</p>
+          </div>
+
+          <div class="feature-card" style="text-align: center;">
+            <div class="feature-title" style="justify-content: center;">
+              <span class="icon">👤</span>
+              Protusha Das
+            </div>
+            <p style="margin: 0; font-size: 0.85rem; color: #00897b;">Team Member</p>
+          </div>
+
+          <div class="feature-card" style="text-align: center;">
+            <div class="feature-title" style="justify-content: center;">
+              <span class="icon">👤</span>
+              Subham Paik
+            </div>
+            <p style="margin: 0; font-size: 0.85rem; color: #00897b;">Team Member</p>
+          </div>
+
+          <div class="feature-card" style="text-align: center;">
+            <div class="feature-title" style="justify-content: center;">
+              <span class="icon">👤</span>
+              Suman Das
+            </div>
+            <p style="margin: 0; font-size: 0.85rem; color: #00897b;">Team Member</p>
+          </div>
+        </div>
+
         <div class="credits-info">
           <div class="credits-info-item">
             <strong>Batch:</strong> 2023-26
