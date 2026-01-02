@@ -1052,11 +1052,20 @@
       /* Mobile Navigation */
       nav {
         padding: 12px 20px;
-        position: sticky;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
         /* CRITICAL: Remove backdrop-filter on mobile to prevent it from
            creating a containing block that breaks position:fixed on .nav-links */
         backdrop-filter: none;
         background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Add padding to body/main to account for fixed nav */
+      main {
+        padding-top: 80px;
       }
 
       .nav-container {
